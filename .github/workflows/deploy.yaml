@@ -13,43 +13,26 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Cache node modules
-        id: cache-npm
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-node-modules
+      - uses: actions/cache@v2
         with:
-          # npm cache files are stored in `~/.npm` on Linux/macOS
-          path: ~/.npm
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-
-      - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
-        name: List the state of node modules
-        continue-on-error: true
-        run: npm list
+          path: "**/node_modules"
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install dependencies
         run: yarn install
-
-      - name: Prepare build folder
-        run: |
-          mkdir build
-          cd build
-          git clone https://github.com/Dzmitry-Klokau/flash-cards-app . --depth 1
-          cd ..
-          ls build
 
       - name: Build application
         run: |
           yarn run build
           ls build
 
-      - name: Publish build
-        run: |
-          cd build
-          git commit -m "publish new version"
-          git push
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
+        with:
+          source-directory: "build"
+          destination-github-username: "Dzmitry-Klokau"
+          destination-repository-name: "flash-cards-app"
+          user-email: dzmitry.klokau@gmail.com
+          target-branch: main
