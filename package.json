@@ -1,5 +1,6 @@
 {
   "name": "my-app",
+  "homepage": "https://dzmitry-klokau.github.io/flash-cards-app",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
