@@ -37,19 +37,19 @@ jobs:
 
       - name: Prepare build folder
         run: |
-          run: mkdir build
-          run: cd build
-          run: git clone https://github.com/Dzmitry-Klokau/flash-cards-app . --depth 1
-          run: cd ..
-          run: ls build
+          mkdir build
+          cd build
+          git clone https://github.com/Dzmitry-Klokau/flash-cards-app . --depth 1
+          cd ..
+          ls build
 
       - name: Build application
         run: |
-          run: yarn run build
-          run: ls build
+          yarn run build
+          ls build
 
       - name: Publish build
         run: |
-          run: cd build
-          run: git commit -m "publish new version"
-          run: git push
+          cd build
+          git commit -m "publish new version"
+          git push
