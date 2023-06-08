@@ -6,8 +6,6 @@ import {
   Games as GameIcon,
 } from "@mui/icons-material";
 
-export const basename = "/flash-cards-app";
-
 export const routes: Routes = {
   home: { path: "home", Icon: HomeIcon },
   rating: { path: "rating", Icon: RatingIcon },
