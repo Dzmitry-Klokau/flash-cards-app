@@ -11,6 +11,7 @@ import {
 import { Layout } from "./layout";
 import routes from "./routes";
 
+// only hash routes works in the Github Pages
 const router = createHashRouter([
   {
     element: <Layout />,
