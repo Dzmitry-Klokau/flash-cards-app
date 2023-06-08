@@ -1,4 +1,8 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Navigate,
+} from "react-router-dom";
 
 import {
   HomeScreen,
@@ -9,7 +13,7 @@ import {
 } from "../screens";
 
 import { Layout } from "./layout";
-import routes from "./routes";
+import routes, { basename } from "./routes";
 
 const router = createBrowserRouter(
   [
@@ -38,8 +42,12 @@ const router = createBrowserRouter(
         },
       ],
     },
+    {
+      path: "*",
+      element: <Navigate to={routes.home.path} replace />,
+    },
   ],
-  { basename: "/" }
+  { basename }
 );
 
 export const Navigation = () => <RouterProvider router={router} />;
