@@ -1,4 +1,3 @@
-import { styled } from "@mui/material/styles";
 import {
   Badge,
   IconButton,
@@ -13,74 +12,48 @@ import {
 import { matchRoutes, useLocation } from "react-router-dom";
 import { capitalize } from "lodash";
 
-import { shouldForwardProp } from "../../../shared/utils";
-import { drawerWidth } from "../../../shared/constants";
 import routes from "../../routes";
-
-type AppBarProps = {
-  open: boolean;
-};
-
-const WrappedAppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => shouldForwardProp<AppBarProps>(["open"], prop),
-})<AppBarProps>(({ theme, open }) => ({
-  zIndex: theme.zIndex.drawer + 1,
-  transition: theme.transitions.create(["width", "margin"], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  ...(open && {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(["width", "margin"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
-}));
 
 type Props = {
   toggleDrawer: VoidFunction;
-  open: boolean;
 };
 
-export const AppBar = ({ open, toggleDrawer }: Props) => {
-  return (
-    <WrappedAppBar position="absolute" open={open}>
-      <Toolbar
+export const AppBar = ({ toggleDrawer }: Props) => (
+  <MuiAppBar
+    position="absolute"
+    sx={{
+      // zIndex: theme.zIndex.drawer + 1,
+      zIndex: 9999,
+    }}
+  >
+    <Toolbar>
+      <IconButton
+        edge="start"
+        color="inherit"
+        aria-label="open drawer"
+        onClick={toggleDrawer}
         sx={{
-          pr: "24px", // keep right padding when drawer closed
+          marginRight: "36px",
         }}
       >
-        <IconButton
-          edge="start"
-          color="inherit"
-          aria-label="open drawer"
-          onClick={toggleDrawer}
-          sx={{
-            marginRight: "36px",
-            ...(open && { display: "none" }),
-          }}
-        >
-          <MenuIcon />
-        </IconButton>
-        <RouteLabel />
-        <IconButton color="inherit">
-          <Badge badgeContent={4} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-      </Toolbar>
-    </WrappedAppBar>
-  );
-};
+        <MenuIcon />
+      </IconButton>
+      <RouteLabel />
+      <IconButton color="inherit">
+        <Badge badgeContent={4} color="secondary">
+          <NotificationsIcon />
+        </Badge>
+      </IconButton>
+    </Toolbar>
+  </MuiAppBar>
+);
 
 const routesArr = Object.entries(routes).map(([name, value]) => ({
   name,
   ...value,
 }));
 
-export const RouteLabel = () => {
+const RouteLabel = () => {
   const location = useLocation();
   const matchedRoute = matchRoutes(routesArr, location);
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import { Container, Toolbar, Box, CssBaseline } from "@mui/material";
+import { Container, Box, CssBaseline } from "@mui/material";
 
 import { AppBar, Copyright, Drawer } from "./components";
 
@@ -12,7 +12,7 @@ const AppNavigation = () => {
 
   return (
     <>
-      <AppBar open={open} toggleDrawer={toggleDrawer} />
+      <AppBar toggleDrawer={toggleDrawer} />
       <Drawer open={open} toggleDrawer={toggleDrawer} />
     </>
   );
@@ -30,16 +30,30 @@ export const Layout = () => (
             ? theme.palette.grey[100]
             : theme.palette.grey[900],
         flexGrow: 1,
+        pt: 6,
         height: "100vh",
         overflow: "auto",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
       }}
     >
-      <Toolbar />
-      <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+      <Container
+        maxWidth="lg"
+        sx={{
+          mt: 4,
+          mb: 4,
+        }}
+      >
         {/** Screens in the Outlet */}
         <Outlet />
-        <Copyright sx={{ pt: 4 }} />
       </Container>
+      <Copyright
+        sx={{
+          mt: 4,
+          mb: 4,
+        }}
+      />
     </Box>
   </Box>
 );

@@ -21,7 +21,7 @@ const WrappedDrawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => shouldForwardProp<AppBarProps>(["open"], prop),
 })<AppBarProps>(({ theme, open }) => ({
   "& .MuiDrawer-paper": {
-    position: "relative",
+    position: "absolute",
     whiteSpace: "nowrap",
     width: drawerWidth,
     transition: theme.transitions.create("width", {
@@ -35,10 +35,7 @@ const WrappedDrawer = styled(MuiDrawer, {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
       }),
-      width: theme.spacing(7),
-      [theme.breakpoints.up("sm")]: {
-        width: theme.spacing(9),
-      },
+      width: 0,
     }),
   },
 }));
