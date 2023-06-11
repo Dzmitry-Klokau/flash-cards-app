@@ -71,11 +71,19 @@ export const Drawer = ({ open, toggleDrawer }: Props) => (
     </Toolbar>
     <List component="nav">
       {firstLevelRoutes.map((route) => (
-        <NavButton key={`first_level_nav_${route.name}`} {...route} />
+        <NavButton
+          key={`first_level_nav_${route.name}`}
+          onClick={toggleDrawer}
+          {...route}
+        />
       ))}
       <Divider sx={{ my: 1 }} />
       {secondLevelRoutes.map((route) => (
-        <NavButton key={`second_level_nav_${route.name}`} {...route} />
+        <NavButton
+          key={`second_level_nav_${route.name}`}
+          onClick={toggleDrawer}
+          {...route}
+        />
       ))}
     </List>
   </WrappedDrawer>

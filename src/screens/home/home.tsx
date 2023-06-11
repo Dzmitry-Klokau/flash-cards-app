@@ -11,9 +11,23 @@ export const HomeScreen = () => {
             p: 2,
             display: "flex",
             flexDirection: "column",
-            height: 240,
           }}
         >
+          <Typography variant="h1" component="h2">
+            Home
+          </Typography>
+          <Typography variant="h1" component="h2">
+            Home
+          </Typography>
+          <Typography variant="h1" component="h2">
+            Home
+          </Typography>
+          <Typography variant="h1" component="h2">
+            Home
+          </Typography>
+          <Typography variant="h1" component="h2">
+            Home
+          </Typography>
           <Typography variant="h1" component="h2">
             Home
           </Typography>
