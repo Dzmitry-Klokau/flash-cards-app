@@ -1,6 +1,7 @@
 import "./App.css";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+
 import { Navigation } from "./navigation";
 
 const defaultTheme = createTheme();
