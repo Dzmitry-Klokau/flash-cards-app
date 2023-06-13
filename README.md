@@ -9,3 +9,7 @@
 - [Control Access with Custom Claims and Security Rules](https://firebase.google.com/docs/auth/admin/custom-claims)
 - [sdc](https://dev.to/alvardev/firebase-firestore-rules-with-custom-claims-an-easy-way-523d)
 - [Firebase Auth Tutorial #17 - Intro to Custom Claims](https://www.youtube.com/watch?v=SSiLsIkPQWs)
+
+### Firebase configuration
+
+Add your domain (dzmitry-klokau.github.io) to the OAuth redirect domains list in the Firebase console -> Authentication -> Settings -> Authorized domains tab
