@@ -12,6 +12,7 @@ import { shouldForwardProp } from "../../../shared/utils";
 import { drawerWidth } from "../../../shared/constants";
 import { NavButton } from "./nav-button";
 import routes from "../../routes";
+import { auth } from "../../../service/firebase";
 
 type AppBarProps = {
   open: boolean;
@@ -47,12 +48,13 @@ type Props = {
 
 const firstLevelRoutes: RouteItemObjList = [
   { name: "home", ...routes.home },
-  { name: "rating", ...routes.rating },
-  { name: "profile", ...routes.profile },
-];
-const secondLevelRoutes: RouteItemObjList = [
-  { name: "settings", ...routes.settings },
   { name: "game", ...routes.game },
+];
+
+const secondLevelRoutes: RouteItemObjList = [
+  { name: "profile", ...routes.profile },
+  { name: "admin", ...routes.admin },
+  // { name: "settings", ...routes.settings },
 ];
 
 export const Drawer = ({ open, toggleDrawer }: Props) => (
@@ -78,13 +80,19 @@ export const Drawer = ({ open, toggleDrawer }: Props) => (
         />
       ))}
       <Divider sx={{ my: 1 }} />
-      {secondLevelRoutes.map((route) => (
-        <NavButton
-          key={`second_level_nav_${route.name}`}
-          onClick={toggleDrawer}
-          {...route}
-        />
-      ))}
+      {secondLevelRoutes
+        .filter(
+          (r) =>
+            r.name !== "admin" ||
+            auth.currentUser?.uid === "mLZ1KEJTBDdQgPmS7NzP4tf9vH82"
+        )
+        .map((route) => (
+          <NavButton
+            key={`second_level_nav_${route.name}`}
+            onClick={toggleDrawer}
+            {...route}
+          />
+        ))}
     </List>
   </WrappedDrawer>
 );

@@ -1,4 +1,4 @@
-declare type RouteName = "home" | "rating" | "profile" | "settings" | "game";
+declare type RouteName = "home" | "admin" | "profile" | "settings" | "game";
 
 declare type RouteOptions = {
   path: string;

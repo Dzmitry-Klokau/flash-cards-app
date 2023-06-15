@@ -1,24 +1,49 @@
-import { Typography } from "@mui/material";
-import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
+import { Card, Typography, Grid, CardActionArea } from "@mui/material";
+
+import { readGroupCollection } from "../../service/firebase";
+import { useEffect, useState } from "react";
 
 export const GameScreen = () => {
+  const [data, setData] = useState<GroupType[]>([]);
+
+  useEffect(() => {
+    const loadGroups = async () => {
+      const res = await readGroupCollection();
+      setData(res);
+    };
+    loadGroups();
+  }, []);
+
   return (
-    <Grid container spacing={3}>
-      <Grid item xs={12} md={8} lg={9}>
-        <Paper
-          sx={{
-            p: 2,
-            display: "flex",
-            flexDirection: "column",
-            height: 240,
+    <>
+      {data.map((item) => (
+        <Item data={item} />
+      ))}
+    </>
+  );
+};
+
+const Item = ({ data }: any) => {
+  return (
+    <Grid item md={6} xs={12} sx={{ alignContent: "center" }}>
+      <Card variant="outlined">
+        <CardActionArea
+          onClick={() => {
+            //
           }}
         >
-          <Typography variant="h1" component="h2">
-            GameScreen
+          <Typography
+            variant="h1"
+            component="h2"
+            sx={{ textAlign: "center", mt: 2 }}
+          >
+            {data.title}
           </Typography>
-        </Paper>
-      </Grid>
+          <Typography sx={{ textAlign: "center", mb: 2 }}>
+            {data.desc}
+          </Typography>
+        </CardActionArea>
+      </Card>
     </Grid>
   );
 };

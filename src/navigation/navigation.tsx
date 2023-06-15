@@ -1,11 +1,12 @@
 import { createHashRouter, RouterProvider, Navigate } from "react-router-dom";
 
+import { Box, CircularProgress, Container, CssBaseline } from "@mui/material";
 import {
   HomeScreen,
   SettingsScreen,
   ProfileScreen,
   GameScreen,
-  RatingScreen,
+  AdminScreen,
   SignIn,
 } from "../screens";
 
@@ -38,8 +39,8 @@ const router = createHashRouter([
         Component: GameScreen,
       },
       {
-        path: routes.rating.path,
-        Component: RatingScreen,
+        path: routes.admin.path,
+        Component: AdminScreen,
       },
     ],
   },
@@ -50,17 +51,31 @@ const router = createHashRouter([
 ]);
 
 export const Navigation = () => {
-  const [user, setUser] = useState<User | null | undefined>(null);
+  const [user, setUser] = useState<User | null | undefined>();
 
   useEffect(() => {
     auth.onAuthStateChanged((state) => {
-      console.log({ state });
       setUser(state);
     });
   }, []);
 
   if (isUndefined(user)) {
-    return null; // todo loader
+    return (
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            height: "100vh",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      </Container>
+    );
   }
 
   if (isNull(user)) {

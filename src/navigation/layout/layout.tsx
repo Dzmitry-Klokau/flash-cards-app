@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import { Container, Box, CssBaseline } from "@mui/material";
+import { Container, Box, CssBaseline, Grid } from "@mui/material";
 
 import { AppBar, Drawer } from "./components";
 import { Copyright } from "../../shared/components";
@@ -46,8 +46,10 @@ export const Layout = () => (
           mb: 4,
         }}
       >
-        {/** Screens in the Outlet */}
-        <Outlet />
+        <Grid container spacing={3} sx={{ justifyContent: "center", pt: 4 }}>
+          {/** Screens in the Outlet */}
+          <Outlet />
+        </Grid>
       </Container>
       <Copyright
         sx={{
