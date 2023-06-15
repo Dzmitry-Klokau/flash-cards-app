@@ -1,8 +1,7 @@
-import { Box, CardActionArea, Paper, Typography } from "@mui/material";
+import { CardActionArea, Paper, Typography } from "@mui/material";
 import { isEmpty } from "lodash";
-import { memo, useMemo, useState } from "react";
+import { memo, useState } from "react";
 import {
-  Link,
   Table,
   TableBody,
   TableCell,
@@ -26,7 +25,7 @@ export const GameTable = memo(({ data, visible }: Props) => {
   return (
     <>
       <TableContainer component={Paper} sx={{ ph: 1 }}>
-        <Table sx={{ minWidth: 350 }} aria-label="simple table">
+        <Table sx={{ minWidth: 200 }} aria-label="simple table">
           <TableHead>
             <TableRow>
               <TableCell>Title</TableCell>
@@ -65,7 +64,7 @@ export const GameTable = memo(({ data, visible }: Props) => {
           <Typography variant="h5" component="h5" sx={{ p: 2 }}>
             Selected item:
           </Typography>
-          <Table sx={{ minWidth: 350 }} aria-label="simple table">
+          <Table sx={{ minWidth: 200 }} aria-label="simple table">
             <TableBody>
               <TableRow>
                 <TableCell>
