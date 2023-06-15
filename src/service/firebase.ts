@@ -1,13 +1,12 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
-import {
-  // collection,
-  getFirestore,
-  // getDocs,
-  // where,
-  // query,
-} from "firebase/firestore";
+import // collection,
+// getFirestore,
+// getDocs,
+// where,
+// query,
+"firebase/firestore";
 import { mockGroupList } from "../mocks";
 import { mockGameList } from "../mocks/mock-games";
 
