@@ -18,7 +18,6 @@ const firebaseConfig = {
   storageBucket: "flash-cards-567cd.appspot.com",
   messagingSenderId: "161496265379",
   appId: "1:161496265379:web:bb07fb8c08c738cd8ac516",
-  // databaseURL: "https://flash-cards-567cd.europe-central2.firebasedatabase.app",
 };
 
 // Initialize Firebase
