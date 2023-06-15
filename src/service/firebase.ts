@@ -30,7 +30,7 @@ provider.setCustomParameters({ prompt: "select_account" });
 
 export const signInWithGoogle = () => signInWithPopup(auth, provider);
 
-const db = getFirestore();
+// const db = getFirestore();
 
 export const readGroupCollection: () => Promise<GroupType[]> = async () => {
   return Promise.resolve(mockGroupList);

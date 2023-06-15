@@ -2,7 +2,6 @@ import {
   Home as HomeIcon,
   Settings as SettingsIcon,
   VerifiedUserRounded as ProfileIcon,
-  Leaderboard as RatingIcon,
   Games as GameIcon,
   AdminPanelSettings as AdminIcon,
 } from "@mui/icons-material";
