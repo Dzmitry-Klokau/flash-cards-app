@@ -1,6 +1,6 @@
-import { ListItem, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { isEmpty } from "lodash";
-import { memo, useCallback, useMemo, useState } from "react";
+import { memo, useMemo, useState } from "react";
 
 import { ModalWrapper, Table } from "../../../shared/components";
 
@@ -50,7 +50,7 @@ export const GameTable = memo(({ data, visible }: Props) => {
         {modalData?.cards.map((c, index) => (
           <Typography
             key={index}
-                id="modal-modal-title"
+            id="modal-modal-title"
             variant="h6"
             component="h2"
           >

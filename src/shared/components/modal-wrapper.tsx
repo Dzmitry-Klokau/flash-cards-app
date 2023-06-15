@@ -1,6 +1,5 @@
 import { ReactNode } from "react";
-import { Paper, Dialog, Box } from "@mui/material";
-import { isEmpty } from "lodash";
+import { Dialog, Box } from "@mui/material";
 
 type Props = {
   open: boolean;
