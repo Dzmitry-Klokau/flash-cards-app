@@ -57,10 +57,6 @@ const RouteLabel = () => {
   const location = useLocation();
   const matchedRoute = matchRoutes(routesArr, location);
 
-  if (matchedRoute === null) {
-    return null;
-  }
-
   return (
     <Typography
       component="h1"
@@ -69,7 +65,7 @@ const RouteLabel = () => {
       noWrap
       sx={{ flexGrow: 1 }}
     >
-      {capitalize(matchedRoute[0].route.name.toString())}
+      {matchedRoute ? capitalize(matchedRoute[0].route.name.toString()) : ""}
     </Typography>
   );
 };

@@ -1,17 +1,17 @@
 export const mockGameList: Array<GameType> = [
   {
-    desc: "Общие фразы в литовском языке",
+    id: "i7vUjv9kYnrdhnnepDpy",
     title: "Общие фразы",
-    uid: "i7vUjv9kYnrdhnnepDpy",
+    desc: "Общие фразы в литовском языке",
     cards: [
       { optional: "Ня", primary: "Нет", secondary: "Ne" },
       { primary: "Да", secondary: "Taip", optional: "Тэйп" },
     ],
   },
   {
-    desc: "Полный список общих фраз",
+    id: "d32scd34cds43ed4332e",
     title: "Общие фразы (полный)",
-    uid: "d32scd34cds43ed4332e",
+    desc: "Полный список общих фраз",
     cards: [
       { primary: "Нет", secondary: "Ne", optional: "Ня" },
       { primary: "Да", secondary: "Taip", optional: "Тэйп" },

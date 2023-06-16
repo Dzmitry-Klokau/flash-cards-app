@@ -1,12 +1,15 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
-import // collection,
-// getFirestore,
-// getDocs,
-// where,
-// query,
-"firebase/firestore";
+import {
+  collection,
+  getFirestore,
+  getDocs,
+  getDoc,
+  doc,
+  query,
+  setDoc,
+} from "firebase/firestore";
 import { mockGroupList } from "../mocks";
 import { mockGameList } from "../mocks/mock-games";
 
@@ -29,22 +32,53 @@ provider.setCustomParameters({ prompt: "select_account" });
 
 export const signInWithGoogle = () => signInWithPopup(auth, provider);
 
-// const db = getFirestore();
+const db = getFirestore();
+
+const USE_MOCKS = true;
 
 export const readGroupCollection: () => Promise<GroupType[]> = async () => {
-  return Promise.resolve(mockGroupList);
-  // const q = query(collection(db, "group"));
-  // const querySnapshot = await getDocs(q);
-  // return querySnapshot.docs.map((doc) => {
-  //   return { ...doc.data(), uid: doc.id } as GroupType;
-  // });
+  if (USE_MOCKS) {
+    return Promise.resolve(mockGroupList);
+  }
+  const q = query(collection(db, "group"));
+  const querySnapshot = await getDocs(q);
+  return querySnapshot.docs.map((doc) => {
+    return { ...doc.data(), id: doc.id } as GroupType;
+  });
 };
 
 export const readGameCollection: () => Promise<GameType[]> = async () => {
-  return Promise.resolve(mockGameList);
-  // const q = query(collection(db, "game"));
-  // const querySnapshot = await getDocs(q);
-  // return querySnapshot.docs.map((doc) => {
-  //   return { ...doc.data(), uid: doc.id } as GameType;
-  // });
+  if (USE_MOCKS) {
+    return Promise.resolve(mockGameList);
+  }
+  const q = query(collection(db, "game"));
+  const querySnapshot = await getDocs(q);
+  return querySnapshot.docs.map((doc) => {
+    return { ...doc.data(), id: doc.id } as GameType;
+  });
+};
+
+export const readGameById: (id: string) => Promise<GameType> = async (
+  id: string
+) => {
+  if (USE_MOCKS) {
+    const game = mockGameList.find((g) => g.id === id);
+    return Promise.resolve(game ?? mockGameList[0]);
+  }
+  const docRef = doc(db, "game", id);
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    return Promise.resolve({ ...(docSnap.data() as GameType), id });
+  }
+  return Promise.reject(new Error(`No such document: ${id}`));
+};
+
+export const writeGame: (data: GameType) => Promise<void> = async (
+  data: GameType
+) => {
+  if (USE_MOCKS) {
+    return Promise.resolve();
+  }
+  const docRef = doc(db, "game", data.id);
+  return setDoc(docRef, data);
 };

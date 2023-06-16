@@ -1,11 +1,11 @@
-import { Tabs, Box, Grid, Tab } from "@mui/material";
 import { useEffect, useState } from "react";
+import { Tabs, Box, Grid, Tab } from "@mui/material";
 
 import {
   readGameCollection,
   readGroupCollection,
 } from "../../service/firebase";
-import { GameTable, GroupTable } from "./components";
+import { GroupTab, GameTab } from "./tabs";
 
 export const AdminScreen = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -36,8 +36,8 @@ export const AdminScreen = () => {
           <Tab label="Groups" />
           <Tab label="Games" />
         </Tabs>
-        {activeTab === 0 && <GroupTable data={groups} />}
-        <GameTable data={games} visible={activeTab === 1} />
+        <GroupTab data={groups} visible={activeTab === 0} />
+        <GameTab data={games} visible={activeTab === 1} />
       </Box>
     </Grid>
   );

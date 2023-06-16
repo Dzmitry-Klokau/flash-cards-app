@@ -12,6 +12,7 @@ export const routes: Routes = {
   settings: { path: "settings", Icon: SettingsIcon },
   game: { path: "game", Icon: GameIcon },
   admin: { path: "admin", Icon: AdminIcon },
+  "admin-game-details": { path: "admin-game-details" },
 };
 
 export default routes;

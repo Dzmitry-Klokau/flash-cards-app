@@ -1,4 +1,4 @@
-import { createHashRouter, RouterProvider, Navigate } from "react-router-dom";
+import { createHashRouter, RouterProvider } from "react-router-dom";
 
 import { Box, CircularProgress, Container, CssBaseline } from "@mui/material";
 import {
@@ -7,6 +7,7 @@ import {
   ProfileScreen,
   GameScreen,
   AdminScreen,
+  AdminGameDetails,
   SignIn,
 } from "../screens";
 
@@ -40,14 +41,23 @@ const router = createHashRouter([
       },
       {
         path: routes.admin.path,
-        Component: AdminScreen,
+        children: [
+          {
+            path: "",
+            Component: AdminScreen,
+          },
+          {
+            path: `${routes["admin-game-details"].path}/:id`,
+            Component: AdminGameDetails,
+          },
+        ],
       },
     ],
   },
-  {
-    path: "*",
-    element: <Navigate to={routes.home.path} replace />,
-  },
+  // {
+  //   path: "*",
+  //   element: <Navigate to={routes.home.path} replace />,
+  // },
 ]);
 
 export const Navigation = () => {

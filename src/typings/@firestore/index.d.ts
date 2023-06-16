@@ -1,11 +1,11 @@
 declare type GroupType = {
-  uid: string;
+  id: string;
   title: string;
   desc: string;
 };
 
 declare type GameType = {
-  uid: string;
+  id: string;
   title: string;
   desc: string;
   cards: Array<{

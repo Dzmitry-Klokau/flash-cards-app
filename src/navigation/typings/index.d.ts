@@ -1,8 +1,14 @@
-declare type RouteName = "home" | "admin" | "profile" | "settings" | "game";
+declare type RouteName =
+  | "home"
+  | "admin"
+  | "admin-game-details"
+  | "profile"
+  | "settings"
+  | "game";
 
 declare type RouteOptions = {
   path: string;
-  Icon: SvgIconComponent;
+  Icon?: SvgIconComponent;
 };
 
 declare type Routes = { [ROUTE in RouteName]: RouteOptions };
