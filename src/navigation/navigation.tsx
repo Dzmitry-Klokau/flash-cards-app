@@ -1,4 +1,4 @@
-import { createHashRouter, RouterProvider } from "react-router-dom";
+import { createHashRouter, Navigate, RouterProvider } from "react-router-dom";
 
 import { Box, CircularProgress, Container, CssBaseline } from "@mui/material";
 import {
@@ -54,10 +54,10 @@ const router = createHashRouter([
       },
     ],
   },
-  // {
-  //   path: "*",
-  //   element: <Navigate to={routes.home.path} replace />,
-  // },
+  {
+    path: "*",
+    element: <Navigate to={routes.home.path} replace />,
+  },
 ]);
 
 export const Navigation = () => {
