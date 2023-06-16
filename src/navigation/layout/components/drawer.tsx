@@ -48,7 +48,7 @@ type Props = {
 
 const firstLevelRoutes: RouteItemObjList = [
   { name: "home", ...routes.home },
-  { name: "game", ...routes.game },
+  { name: "games", ...routes.games },
 ];
 
 const secondLevelRoutes: RouteItemObjList = [

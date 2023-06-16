@@ -42,8 +42,8 @@ export const Layout = () => (
       <Container
         maxWidth="lg"
         sx={{
-          mt: 4,
-          mb: 4,
+          mt: 2,
+          mb: 2,
         }}
       >
         <Grid container spacing={3} sx={{ justifyContent: "center", pt: 4 }}>

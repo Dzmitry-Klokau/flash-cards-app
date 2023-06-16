@@ -4,13 +4,15 @@ declare type GroupType = {
   desc: string;
 };
 
+declare type CardType = {
+  primary: string;
+  secondary: string;
+  optional: string;
+};
+
 declare type GameType = {
   id: string;
   title: string;
   desc: string;
-  cards: Array<{
-    primary: string;
-    secondary: string;
-    optional: string;
-  }>;
+  cards: Array<CardType>;
 };

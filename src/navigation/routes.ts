@@ -10,9 +10,10 @@ export const routes: Routes = {
   home: { path: "home", Icon: HomeIcon },
   profile: { path: "profile", Icon: ProfileIcon },
   settings: { path: "settings", Icon: SettingsIcon },
-  game: { path: "game", Icon: GameIcon },
+  games: { path: "games", Icon: GameIcon },
   admin: { path: "admin", Icon: AdminIcon },
   "admin-game-details": { path: "admin-game-details" },
+  player: { path: "player" },
 };
 
 export default routes;

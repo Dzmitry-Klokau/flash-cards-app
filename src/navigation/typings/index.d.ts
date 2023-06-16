@@ -4,7 +4,8 @@ declare type RouteName =
   | "admin-game-details"
   | "profile"
   | "settings"
-  | "game";
+  | "games"
+  | "player";
 
 declare type RouteOptions = {
   path: string;

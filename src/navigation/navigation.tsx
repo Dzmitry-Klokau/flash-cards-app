@@ -5,10 +5,11 @@ import {
   HomeScreen,
   SettingsScreen,
   ProfileScreen,
-  GameScreen,
+  GamesScreen,
   AdminScreen,
   AdminGameDetails,
   SignIn,
+  PlayerScreen,
 } from "../screens";
 
 import { Layout } from "./layout";
@@ -36,8 +37,14 @@ const router = createHashRouter([
         Component: ProfileScreen,
       },
       {
-        path: routes.game.path,
-        Component: GameScreen,
+        path: routes.games.path,
+        children: [
+          { path: "", Component: GamesScreen },
+          {
+            path: `${routes.player.path}/:id`,
+            Component: PlayerScreen,
+          },
+        ],
       },
       {
         path: routes.admin.path,
