@@ -31,11 +31,17 @@ export const PlayerScreen = () => {
   }, [params.id]);
 
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setActiveStep((prevActiveStep) => {
+      const next = prevActiveStep + 1;
+      return next >= (data?.cards.length ?? 0) ? 0 : next;
+    });
   };
 
   const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    setActiveStep((prevActiveStep) => {
+      const next = prevActiveStep - 1;
+      return next >= 0 ? next : (data?.cards.length ?? 0) - 1;
+    });
   };
 
   if (isUndefined(data)) {
@@ -61,21 +67,13 @@ export const PlayerScreen = () => {
           position="static"
           activeStep={activeStep}
           nextButton={
-            <Button
-              size="small"
-              onClick={handleNext}
-              disabled={activeStep === data.cards.length - 1}
-            >
+            <Button size="small" onClick={handleNext}>
               Next
               <KeyboardArrowRight />
             </Button>
           }
           backButton={
-            <Button
-              size="small"
-              onClick={handleBack}
-              disabled={activeStep === 0}
-            >
+            <Button size="small" onClick={handleBack}>
               <KeyboardArrowLeft />
               Back
             </Button>
@@ -102,7 +100,7 @@ const Item = ({ item }: { item: CardType }) => {
       <Card variant="outlined">
         <CardActionArea
           onClick={() => {
-            setOpen(true);
+            setOpen((prev) => !prev);
           }}
           sx={{
             p: 4,

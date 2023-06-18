@@ -54,6 +54,10 @@ const router = createHashRouter([
             Component: AdminScreen,
           },
           {
+            path: routes["admin-game-details"].path,
+            Component: AdminGameDetails,
+          },
+          {
             path: `${routes["admin-game-details"].path}/:id`,
             Component: AdminGameDetails,
           },

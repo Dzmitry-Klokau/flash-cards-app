@@ -7,8 +7,11 @@ import {
   TableHead,
   TableRow,
   Paper,
+  IconButton,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { Add as AddIcon } from "@mui/icons-material";
+
 import { routes } from "../../../navigation";
 
 type Props = {
@@ -28,7 +31,17 @@ export const GameTab = ({ data, visible }: Props) => {
           <TableHead>
             <TableRow>
               <TableCell>Title</TableCell>
-              <TableCell></TableCell>
+              <TableCell align="right">
+                <IconButton
+                  onClick={() => {
+                    navigate(routes["admin-game-details"].path, {
+                      relative: "path",
+                    });
+                  }}
+                >
+                  <AddIcon />
+                </IconButton>
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

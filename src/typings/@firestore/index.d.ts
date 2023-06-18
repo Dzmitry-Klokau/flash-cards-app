@@ -11,7 +11,7 @@ declare type CardType = {
 };
 
 declare type GameType = {
-  id: string;
+  id?: string;
   title: string;
   desc: string;
   cards: Array<CardType>;

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import {
   Table,
@@ -22,6 +22,7 @@ import { Formik } from "formik";
 
 import { readGameById, writeGame } from "../../service/firebase";
 import { object, string, array } from "yup";
+import { routes } from "../../navigation";
 
 const validationSchema = object({
   title: string().required(),
@@ -48,7 +49,16 @@ export const AdminGameDetails = () => {
       setData(res);
     };
     if (params.id) {
+      // esiting game
       loadData(params.id);
+    } else {
+      // new game
+      const emptyGame: GameType = {
+        title: "",
+        desc: "",
+        cards: [],
+      };
+      setData(emptyGame);
     }
   }, [params.id]);
 
@@ -60,7 +70,7 @@ export const AdminGameDetails = () => {
     <Grid item xs={12} md={8} lg={9}>
       <Paper
         sx={{
-          p: 4,
+          p: 2,
           display: "flex",
           flexDirection: "column",
         }}
@@ -71,8 +81,14 @@ export const AdminGameDetails = () => {
           validateOnBlur={true}
           validateOnChange={false}
           onSubmit={async (data) => {
-            await writeGame(data);
-            setTimeout(() => navigate(0), 500);
+            const res = await writeGame(data);
+            if (res?.id) {
+              navigate(res.id, {
+                relative: "path",
+              });
+            } else {
+              setTimeout(() => navigate(0), 500);
+            }
           }}
         >
           {({
@@ -87,14 +103,18 @@ export const AdminGameDetails = () => {
             isValid,
           }) => (
             <>
-              <TextField
-                sx={{ mt: 6 }}
-                label="ID"
-                variant="standard"
-                value={data.id}
-                disabled
-              />
-              <Divider />
+              {data.id && (
+                <>
+                  <TextField
+                    sx={{ mt: 6 }}
+                    label="ID"
+                    variant="standard"
+                    value={data.id}
+                    disabled
+                  />
+                  <Divider />
+                </>
+              )}
               <TextField
                 sx={{ mt: 2 }}
                 label="Title"
@@ -128,7 +148,7 @@ export const AdminGameDetails = () => {
                   <TableBody>
                     {values.cards.map((card, index) => (
                       <TableRow key={`${data.cards.length}-${index}`}>
-                        <TableCell>
+                        <TableCell padding="none">
                           <TextField
                             variant="outlined"
                             value={card.primary}
@@ -142,9 +162,10 @@ export const AdminGameDetails = () => {
                               );
                               setFieldValue("cards", newCards);
                             }}
+                            sx={styles.cellInput}
                           />
                         </TableCell>
-                        <TableCell>
+                        <TableCell padding="none">
                           <TextField
                             variant="outlined"
                             value={card.secondary}
@@ -158,9 +179,10 @@ export const AdminGameDetails = () => {
                               );
                               setFieldValue("cards", newCards);
                             }}
+                            sx={styles.cellInput}
                           />
                         </TableCell>
-                        <TableCell>
+                        <TableCell padding="none">
                           <TextField
                             variant="outlined"
                             value={card.optional}
@@ -174,9 +196,10 @@ export const AdminGameDetails = () => {
                               );
                               setFieldValue("cards", newCards);
                             }}
+                            sx={styles.cellInput}
                           />
                         </TableCell>
-                        <TableCell>
+                        <TableCell padding="none">
                           <IconButton
                             onClick={() => {
                               setFieldValue(
@@ -243,4 +266,13 @@ export const AdminGameDetails = () => {
       </Paper>
     </Grid>
   );
+};
+
+const styles = {
+  cellInput: {
+    mt: 1,
+    mb: 1,
+    width: "98%",
+    minHeight: 50,
+  },
 };

@@ -9,6 +9,9 @@ import {
   doc,
   query,
   setDoc,
+  addDoc,
+  DocumentData,
+  DocumentReference,
 } from "firebase/firestore";
 import { mockGroupList } from "../mocks";
 import { mockGameList } from "../mocks/mock-games";
@@ -34,7 +37,7 @@ export const signInWithGoogle = () => signInWithPopup(auth, provider);
 
 const db = getFirestore();
 
-const USE_MOCKS = true;
+const USE_MOCKS = false;
 
 export const readGroupCollection: () => Promise<GroupType[]> = async () => {
   if (USE_MOCKS) {
@@ -73,12 +76,20 @@ export const readGameById: (id: string) => Promise<GameType> = async (
   return Promise.reject(new Error(`No such document: ${id}`));
 };
 
-export const writeGame: (data: GameType) => Promise<void> = async (
+export const writeGame: (
   data: GameType
-) => {
+) => Promise<void | { id: string }> = async (data: GameType) => {
   if (USE_MOCKS) {
     return Promise.resolve();
   }
-  const docRef = doc(db, "game", data.id);
-  return setDoc(docRef, data);
+  if (data.id) {
+    // update existing doc
+    const docRef = doc(db, "game", data.id);
+    return setDoc(docRef, data);
+  } else {
+    // Add a new document with a generated id.
+    const collectionRef = collection(db, "game");
+    const res = await addDoc(collectionRef, data);
+    return Promise.resolve({ id: res.id });
+  }
 };

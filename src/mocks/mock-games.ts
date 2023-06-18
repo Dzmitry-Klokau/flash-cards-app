@@ -1,6 +1,6 @@
 export const mockGameList: Array<GameType> = [
   {
-    id: "d32scd34cds43ed4332e",
+    id: "i7vUjv9kYnrdhnnepDpy",
     title: "Общие фразы",
     desc: "Общие фразы в литовском языке",
     cards: [
@@ -84,7 +84,7 @@ export const mockGameList: Array<GameType> = [
     ],
   },
   {
-    id: "2",
+    id: "aPRSStnvkD48nZGKfLhE",
     title: "Ориентация в городе",
     desc: "Фразы для ориентации в городе",
     cards: [
@@ -146,7 +146,7 @@ export const mockGameList: Array<GameType> = [
     ],
   },
   {
-    id: "3",
+    id: "G3jJ4n2epVAnXK4b9D5A",
     title: "В ресторане",
     desc: "Фразы для ресторана",
     cards: [
