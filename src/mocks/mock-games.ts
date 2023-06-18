@@ -272,4 +272,121 @@ export const mockGameList: Array<GameType> = [
       },
     ],
   },
+  {
+    id: "mU7ir4k0BOdDNY8LtU1q",
+    title: "Числа",
+    desc: "От 1 до 1 000 000",
+    cards: [
+      {
+        secondary: "Nulis",
+        primary: "Ноль",
+        optional: "Нулис",
+      },
+      {
+        optional: "Виенас",
+        secondary: "Vienas",
+        primary: "Один",
+      },
+      {
+        secondary: "Du",
+        primary: "Два",
+        optional: "Ду",
+      },
+      {
+        optional: "Трис",
+        primary: "Три",
+        secondary: "Trys",
+      },
+      {
+        secondary: "Keturi",
+        primary: "Четыре",
+        optional: "Кетури",
+      },
+      {
+        primary: "Пять",
+        secondary: "Penki",
+        optional: "Пенки",
+      },
+      {
+        primary: "Шесть",
+        secondary: "Šeši",
+        optional: "Шеши",
+      },
+      {
+        secondary: "Septyni",
+        optional: "Септини",
+        primary: "Семь",
+      },
+      {
+        primary: "Восемь",
+        optional: "Аштуони",
+        secondary: "Aštuoni",
+      },
+      {
+        optional: "Девини",
+        primary: "Девять",
+        secondary: "Devyni",
+      },
+      {
+        secondary: "Dešimt",
+        optional: "Дешимт",
+        primary: "Десять",
+      },
+      {
+        secondary: "Dvidešimt",
+        primary: "Двадцать",
+        optional: "Двидешимт",
+      },
+      {
+        primary: "Тридцать",
+        secondary: "Trisdešimt",
+        optional: "Трисдешимт",
+      },
+      {
+        primary: "Сорок",
+        secondary: "Keturiasdešimt",
+        optional: "Кетурясдешимт",
+      },
+      {
+        secondary: "Penkiasdešimt",
+        primary: "Пятьдесят",
+        optional: "Пенкясдешимт",
+      },
+      {
+        optional: "Шешясдешимт",
+        primary: "Шестьдесят",
+        secondary: "Šešiasdešimt",
+      },
+      {
+        secondary: "Septyniasdešimt",
+        primary: "Семьдесят",
+        optional: "Септинясдешимт",
+      },
+      {
+        secondary: "Aštuoniasdešimt",
+        primary: "Восемьдесят",
+        optional: "Аштуонясдешимт",
+      },
+      {
+        optional: "Девинясдешимт",
+        secondary: "Devyniasdešimt",
+        primary: "Девяносто",
+      },
+      {
+        primary: "Сто",
+        secondary: "Šimtas",
+        optional: "Шимтас",
+      },
+      {
+        optional: "Тукстантис",
+        secondary: "Tūkstantis",
+        primary: "Тысяча",
+      },
+      {
+        secondary: "Milijonas",
+        optional: "Милийонас",
+        primary: "Миллион",
+      },
+    ],
+  },
 ];

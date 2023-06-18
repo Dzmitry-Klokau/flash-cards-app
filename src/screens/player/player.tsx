@@ -8,6 +8,7 @@ import {
   CardActionArea,
   Card,
   Box,
+  Checkbox,
 } from "@mui/material";
 import { useParams } from "react-router-dom";
 
@@ -19,6 +20,7 @@ export const PlayerScreen = () => {
   const params = useParams();
   const [data, setData] = useState<GameType>();
   const [activeStep, setActiveStep] = useState(0);
+  const [random, setRandom] = useState<boolean>(false);
 
   useEffect(() => {
     const loadData = async (id: string) => {
@@ -31,6 +33,9 @@ export const PlayerScreen = () => {
   }, [params.id]);
 
   const handleNext = () => {
+    if (random) {
+      setActiveStep(Math.floor(Math.random() * (data?.cards.length ?? 0)));
+    }
     setActiveStep((prevActiveStep) => {
       const next = prevActiveStep + 1;
       return next >= (data?.cards.length ?? 0) ? 0 : next;
@@ -38,6 +43,9 @@ export const PlayerScreen = () => {
   };
 
   const handleBack = () => {
+    if (random) {
+      setActiveStep(Math.floor(Math.random() * (data?.cards.length ?? 0)));
+    }
     setActiveStep((prevActiveStep) => {
       const next = prevActiveStep - 1;
       return next >= 0 ? next : (data?.cards.length ?? 0) - 1;
@@ -79,6 +87,14 @@ export const PlayerScreen = () => {
             </Button>
           }
         />
+        <Button
+          sx={{ mt: 2 }}
+          size="small"
+          onClick={() => setRandom((prev) => !prev)}
+        >
+          Random
+          <Checkbox disabled checked={random} />
+        </Button>
       </Paper>
     </Grid>
   );

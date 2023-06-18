@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   Table,
@@ -22,7 +22,6 @@ import { Formik } from "formik";
 
 import { readGameById, writeGame } from "../../service/firebase";
 import { object, string, array } from "yup";
-import { routes } from "../../navigation";
 
 const validationSchema = object({
   title: string().required(),
@@ -87,7 +86,7 @@ export const AdminGameDetails = () => {
                 relative: "path",
               });
             } else {
-              setTimeout(() => navigate(0), 500);
+              navigate(0);
             }
           }}
         >

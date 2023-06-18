@@ -10,8 +10,6 @@ import {
   query,
   setDoc,
   addDoc,
-  DocumentData,
-  DocumentReference,
 } from "firebase/firestore";
 import { mockGroupList } from "../mocks";
 import { mockGameList } from "../mocks/mock-games";
@@ -37,7 +35,7 @@ export const signInWithGoogle = () => signInWithPopup(auth, provider);
 
 const db = getFirestore();
 
-const USE_MOCKS = false;
+const USE_MOCKS = true;
 
 export const readGroupCollection: () => Promise<GroupType[]> = async () => {
   if (USE_MOCKS) {
