@@ -15,7 +15,12 @@ import {
   IconButton,
   Button,
 } from "@mui/material";
-import { Delete as DeleteIcon, Add as AddIcon } from "@mui/icons-material";
+import {
+  Delete as DeleteIcon,
+  Add as AddIcon,
+  ArrowUpward as ArrowUpwardIcon,
+  ArrowDownward as ArrowDownwardIcon,
+} from "@mui/icons-material";
 import { isUndefined } from "lodash";
 import { useNavigate, useParams } from "react-router-dom";
 import { Formik } from "formik";
@@ -199,16 +204,46 @@ export const AdminGameDetails = () => {
                           />
                         </TableCell>
                         <TableCell padding="none">
-                          <IconButton
-                            onClick={() => {
-                              setFieldValue(
-                                "cards",
-                                values.cards.filter((_, i) => i !== index)
-                              );
-                            }}
-                          >
-                            <DeleteIcon />
-                          </IconButton>
+                          <Box sx={{ display: "flex", flexDirection: "row" }}>
+                            <IconButton
+                              onClick={() => {
+                                setFieldValue(
+                                  "cards",
+                                  values.cards.filter((_, i) => i !== index)
+                                );
+                              }}
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                            {index !== 0 && (
+                              <IconButton
+                                onClick={() => {
+                                  let data = [...values.cards];
+                                  let temp = data[index];
+                                  data[index] = data[index - 1];
+                                  data[index - 1] = temp;
+
+                                  setFieldValue("cards", data);
+                                }}
+                              >
+                                <ArrowUpwardIcon />
+                              </IconButton>
+                            )}
+                            {index !== values.cards.length - 1 && (
+                              <IconButton
+                                onClick={() => {
+                                  let data = [...values.cards];
+                                  let temp = data[index];
+                                  data[index] = data[index + 1];
+                                  data[index + 1] = temp;
+
+                                  setFieldValue("cards", data);
+                                }}
+                              >
+                                <ArrowDownwardIcon />
+                              </IconButton>
+                            )}
+                          </Box>
                         </TableCell>
                       </TableRow>
                     ))}

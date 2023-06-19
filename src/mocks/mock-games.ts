@@ -278,9 +278,9 @@ export const mockGameList: Array<GameType> = [
     desc: "От 1 до 1 000 000",
     cards: [
       {
+        optional: "Нулис",
         secondary: "Nulis",
         primary: "Ноль",
-        optional: "Нулис",
       },
       {
         optional: "Виенас",
@@ -288,9 +288,9 @@ export const mockGameList: Array<GameType> = [
         primary: "Один",
       },
       {
+        optional: "Ду",
         secondary: "Du",
         primary: "Два",
-        optional: "Ду",
       },
       {
         optional: "Трис",
@@ -298,79 +298,124 @@ export const mockGameList: Array<GameType> = [
         secondary: "Trys",
       },
       {
-        secondary: "Keturi",
         primary: "Четыре",
+        secondary: "Keturi",
         optional: "Кетури",
       },
       {
         primary: "Пять",
-        secondary: "Penki",
         optional: "Пенки",
+        secondary: "Penki",
       },
       {
         primary: "Шесть",
-        secondary: "Šeši",
         optional: "Шеши",
+        secondary: "Šeši",
       },
       {
-        secondary: "Septyni",
         optional: "Септини",
         primary: "Семь",
+        secondary: "Septyni",
       },
       {
         primary: "Восемь",
-        optional: "Аштуони",
         secondary: "Aštuoni",
+        optional: "Аштуони",
       },
       {
-        optional: "Девини",
         primary: "Девять",
+        optional: "Девини",
         secondary: "Devyni",
       },
       {
-        secondary: "Dešimt",
         optional: "Дешимт",
+        secondary: "Dešimt",
         primary: "Десять",
       },
       {
-        secondary: "Dvidešimt",
-        primary: "Двадцать",
-        optional: "Двидешимт",
+        secondary: "Vienuolika",
+        primary: "Одинадцать",
+        optional: "ВенОлика",
       },
       {
-        primary: "Тридцать",
+        primary: "Двенадцать",
+        optional: "ДвИлика",
+        secondary: "Dvylika",
+      },
+      {
+        secondary: "Trylika",
+        optional: "ТрИлика",
+        primary: "Тринадцать",
+      },
+      {
+        optional: "КетурОлика",
+        secondary: "Keturiolika",
+        primary: "Четырнадцать",
+      },
+      {
+        primary: "Пятнадцать",
+        secondary: "Penkiolika",
+        optional: "ПенькОлика",
+      },
+      {
+        primary: "Шестнадцать",
+        optional: "ЩещОлика",
+        secondary: "šešiolika",
+      },
+      {
+        primary: "Семнадцать",
+        secondary: "Septyniolika",
+        optional: "СептинОлика",
+      },
+      {
+        optional: "АштонОлика",
+        secondary: "Aštuoniolika",
+        primary: "Восемнадцать",
+      },
+      {
+        optional: "ДевинОлика",
+        primary: "Девятнадцать",
+        secondary: "Devyniolika",
+      },
+      {
+        optional: "Двидешимт",
+        primary: "Двадцать",
+        secondary: "Dvidešimt",
+      },
+      {
         secondary: "Trisdešimt",
+        primary: "Тридцать",
         optional: "Трисдешимт",
       },
       {
-        primary: "Сорок",
         secondary: "Keturiasdešimt",
+        primary: "Сорок",
         optional: "Кетурясдешимт",
       },
       {
+        optional: "Пенкясдешимт",
         secondary: "Penkiasdešimt",
         primary: "Пятьдесят",
-        optional: "Пенкясдешимт",
       },
       {
-        optional: "Шешясдешимт",
-        primary: "Шестьдесят",
         secondary: "Šešiasdešimt",
+        primary: "Шестьдесят",
+        optional: "Шешясдешимт",
       },
       {
-        secondary: "Septyniasdešimt",
-        primary: "Семьдесят",
         optional: "Септинясдешимт",
+        primary: "Семьдесят",
+        secondary: "Septyniasdešimt",
       },
       {
         secondary: "Aštuoniasdešimt",
-        primary: "Восемьдесят",
         optional: "Аштуонясдешимт",
+        primary: "Восемьдесят",
       },
       {
-        optional: "Девинясдешимт",
         secondary: "Devyniasdešimt",
         primary: "Девяносто",
+        optional: "Девинясдешимт",
       },
       {
         primary: "Сто",
@@ -378,13 +423,13 @@ export const mockGameList: Array<GameType> = [
         optional: "Шимтас",
       },
       {
-        optional: "Тукстантис",
         secondary: "Tūkstantis",
         primary: "Тысяча",
+        optional: "Тукстантис",
       },
       {
-        secondary: "Milijonas",
         optional: "Милийонас",
+        secondary: "Milijonas",
         primary: "Миллион",
       },
     ],

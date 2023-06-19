@@ -1,34 +1,28 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
-  Typography,
   Grid,
   Paper,
-  Button,
-  CardActionArea,
-  Card,
   Box,
   Checkbox,
   Theme,
+  DialogTitle,
+  Dialog,
+  IconButton,
+  Typography,
+  DialogContent,
 } from "@mui/material";
 import { useParams } from "react-router-dom";
-
-import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
-import { readGameById } from "../../service/firebase";
 import { isUndefined } from "lodash";
 import { makeStyles } from "@mui/styles";
-import clsx from "clsx";
+
+import { readGameById } from "../../service/firebase";
+import { Arrow, Header, Item } from "./components";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     p: 2,
     display: "flex",
     flexDirection: "column",
-  },
-  title: { marginTop: theme.spacing(4), textAlign: "center" },
-  centered: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
   },
   container: {
     marginTop: theme.spacing(2),
@@ -52,20 +46,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   right: {
     gridArea: "right",
   },
-  arrow: {
-    margin: theme.spacing(2),
-    backgroundColor: theme.palette.grey[300],
-    minHeight: 100,
-  },
-  card: {
-    margin: theme.spacing(2),
-    width: "100%",
-  },
-  cardContent: {
-    padding: theme.spacing(4),
-    minHeight: 250,
-  },
-  text: { textAlign: "center" },
 }));
 
 export const PlayerScreen = () => {
@@ -74,6 +54,8 @@ export const PlayerScreen = () => {
   const params = useParams();
   const [data, setData] = useState<GameType>();
   const [activeStep, setActiveStep] = useState(0);
+
+  const [dialogVisible, setDialogVisible] = useState<boolean>(false);
   const [random, setRandom] = useState<boolean>(false);
 
   useEffect(() => {
@@ -86,7 +68,7 @@ export const PlayerScreen = () => {
     }
   }, [params.id]);
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     if (random) {
       setActiveStep(Math.floor(Math.random() * (data?.cards.length ?? 0)));
     }
@@ -94,7 +76,7 @@ export const PlayerScreen = () => {
       const next = prevActiveStep + 1;
       return next >= (data?.cards.length ?? 0) ? 0 : next;
     });
-  };
+  }, [data?.cards.length, random]);
 
   const handleBack = () => {
     if (random) {
@@ -113,75 +95,43 @@ export const PlayerScreen = () => {
   return (
     <Grid item xs={12} md={8} lg={9}>
       <Paper className={classes.root}>
-        <Typography variant="h5" className={classes.title}>
-          {data?.title}
-        </Typography>
+        <Header
+          title={data.title}
+          onSettingsPress={() => setDialogVisible(true)}
+        />
         <Box className={classes.container}>
-          <Box className={clsx(classes.centered, classes.left)}>
-            <Button
-              fullWidth
-              variant="contained"
-              onClick={handleBack}
-              className={clsx(classes.centered, classes.arrow)}
-            >
-              <KeyboardArrowLeft />
-            </Button>
-          </Box>
-          <Box className={clsx(classes.centered, classes.item)}>
-            <Item key={activeStep} item={data.cards[activeStep]} />
-          </Box>
-          <Box className={clsx(classes.right, classes.centered)}>
-            <Button
-              fullWidth
-              variant="contained"
-              onClick={handleNext}
-              className={clsx(classes.centered, classes.arrow)}
-            >
-              <KeyboardArrowRight />
-            </Button>
-          </Box>
+          <Arrow
+            className={classes.left}
+            direction="left"
+            onPress={handleBack}
+          />
+          <Item
+            className={classes.item}
+            key={activeStep}
+            item={data.cards[activeStep]}
+          />
+          <Arrow
+            className={classes.right}
+            direction="right"
+            onPress={handleNext}
+          />
         </Box>
 
-        <Button
-          sx={{ mt: 2 }}
-          size="small"
-          onClick={() => setRandom((prev) => !prev)}
+        <Dialog
+          onClose={() => setDialogVisible((prev) => !prev)}
+          open={dialogVisible}
         >
-          Random
-          <Checkbox disabled checked={random} />
-        </Button>
+          <DialogTitle>Settings</DialogTitle>
+          <DialogContent>
+            <Typography>
+              Random
+              <IconButton onClick={() => setRandom((prev) => !prev)}>
+                <Checkbox disabled checked={random} />
+              </IconButton>
+            </Typography>
+          </DialogContent>
+        </Dialog>
       </Paper>
     </Grid>
-  );
-};
-
-const Item = ({ item }: { item: CardType }) => {
-  const classes = useStyles();
-  const [open, setOpen] = useState<boolean>(false);
-
-  return (
-    <Card variant="outlined" className={classes.card}>
-      <CardActionArea
-        onClick={() => {
-          setOpen((prev) => !prev);
-        }}
-        className={classes.cardContent}
-      >
-        {open ? (
-          <>
-            <Typography variant="h5" className={classes.text}>
-              {item.secondary}
-            </Typography>
-            <Typography variant="h6" className={classes.text}>
-              [ {item.optional} ]
-            </Typography>
-          </>
-        ) : (
-          <Typography variant="h5" className={classes.text}>
-            {item.primary}
-          </Typography>
-        )}
-      </CardActionArea>
-    </Card>
   );
 };
