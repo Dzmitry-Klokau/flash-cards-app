@@ -5,6 +5,7 @@ declare type GroupType = {
 };
 
 declare type CardType = {
+  uuid: string;
   primary: string;
   secondary: string;
   optional: string;

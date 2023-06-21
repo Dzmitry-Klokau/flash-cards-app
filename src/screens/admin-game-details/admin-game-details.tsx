@@ -1,32 +1,13 @@
 import { useEffect, useState } from "react";
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Grid,
-  Paper,
-  Box,
-  Divider,
-  TextField,
-  IconButton,
-  Button,
-} from "@mui/material";
-import {
-  Delete as DeleteIcon,
-  Add as AddIcon,
-  ArrowUpward as ArrowUpwardIcon,
-  ArrowDownward as ArrowDownwardIcon,
-} from "@mui/icons-material";
+import { Grid, Paper, Button } from "@mui/material";
 import { isUndefined } from "lodash";
 import { useNavigate, useParams } from "react-router-dom";
 import { Formik } from "formik";
 
 import { readGameById, writeGame } from "../../service/firebase";
 import { object, string, array } from "yup";
+import { Cards, Info } from "./components";
 
 const validationSchema = object({
   title: string().required(),
@@ -95,180 +76,10 @@ export const AdminGameDetails = () => {
             }
           }}
         >
-          {({
-            handleSubmit,
-            handleBlur,
-            handleChange,
-            setFieldValue,
-            setTouched,
-            errors,
-            values,
-            dirty,
-            isValid,
-          }) => (
+          {({ handleSubmit, setTouched, values, dirty, isValid }) => (
             <>
-              {data.id && (
-                <>
-                  <TextField
-                    sx={{ mt: 6 }}
-                    label="ID"
-                    variant="standard"
-                    value={data.id}
-                    disabled
-                  />
-                  <Divider />
-                </>
-              )}
-              <TextField
-                sx={{ mt: 2 }}
-                label="Title"
-                variant="standard"
-                value={values.title}
-                error={!!errors.title}
-                onBlur={handleBlur("title")}
-                onChange={handleChange("title")}
-              />
-              <Divider />
-              <TextField
-                sx={{ mt: 2 }}
-                label="Description"
-                variant="standard"
-                value={values.desc}
-                error={!!errors.desc}
-                onBlur={handleBlur("desc")}
-                onChange={handleChange("desc")}
-              />
-              <Divider />
-              <TableContainer component={Box} sx={{ ph: 1, mt: 6 }}>
-                <Table sx={{ minWidth: 200 }} aria-label="simple table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Primary</TableCell>
-                      <TableCell>Secondary</TableCell>
-                      <TableCell>Optional</TableCell>
-                      <TableCell></TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {values.cards.map((card, index) => (
-                      <TableRow key={`${data.cards.length}-${index}`}>
-                        <TableCell padding="none">
-                          <TextField
-                            variant="outlined"
-                            value={card.primary}
-                            error={!!errors.cards?.[index]}
-                            onBlur={handleBlur(`cards[${index}].primary`)}
-                            onChange={(e) => {
-                              const newCards = values.cards.map((c, i) =>
-                                i === index
-                                  ? { ...c, primary: e.target.value }
-                                  : c
-                              );
-                              setFieldValue("cards", newCards);
-                            }}
-                            sx={styles.cellInput}
-                          />
-                        </TableCell>
-                        <TableCell padding="none">
-                          <TextField
-                            variant="outlined"
-                            value={card.secondary}
-                            error={!!errors.cards?.[index]}
-                            onBlur={handleBlur(`cards[${index}].secondary`)}
-                            onChange={(e) => {
-                              const newCards = values.cards.map((c, i) =>
-                                i === index
-                                  ? { ...c, secondary: e.target.value }
-                                  : c
-                              );
-                              setFieldValue("cards", newCards);
-                            }}
-                            sx={styles.cellInput}
-                          />
-                        </TableCell>
-                        <TableCell padding="none">
-                          <TextField
-                            variant="outlined"
-                            value={card.optional}
-                            error={!!errors.cards?.[index]}
-                            onBlur={handleBlur(`cards[${index}].optional`)}
-                            onChange={(e) => {
-                              const newCards = values.cards.map((c, i) =>
-                                i === index
-                                  ? { ...c, optional: e.target.value }
-                                  : c
-                              );
-                              setFieldValue("cards", newCards);
-                            }}
-                            sx={styles.cellInput}
-                          />
-                        </TableCell>
-                        <TableCell padding="none">
-                          <Box sx={{ display: "flex", flexDirection: "row" }}>
-                            <IconButton
-                              onClick={() => {
-                                setFieldValue(
-                                  "cards",
-                                  values.cards.filter((_, i) => i !== index)
-                                );
-                              }}
-                            >
-                              <DeleteIcon />
-                            </IconButton>
-                            {index !== 0 && (
-                              <IconButton
-                                onClick={() => {
-                                  let data = [...values.cards];
-                                  let temp = data[index];
-                                  data[index] = data[index - 1];
-                                  data[index - 1] = temp;
-
-                                  setFieldValue("cards", data);
-                                }}
-                              >
-                                <ArrowUpwardIcon />
-                              </IconButton>
-                            )}
-                            {index !== values.cards.length - 1 && (
-                              <IconButton
-                                onClick={() => {
-                                  let data = [...values.cards];
-                                  let temp = data[index];
-                                  data[index] = data[index + 1];
-                                  data[index + 1] = temp;
-
-                                  setFieldValue("cards", data);
-                                }}
-                              >
-                                <ArrowDownwardIcon />
-                              </IconButton>
-                            )}
-                          </Box>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                    <TableRow>
-                      <TableCell colSpan={4} onClick={() => {}}>
-                        <IconButton
-                          sx={{
-                            display: "flex",
-                            justifyContent: "center",
-                            width: "100%",
-                          }}
-                          onClick={() => {
-                            setFieldValue("cards", [
-                              ...values.cards,
-                              { primary: "", secondary: "", optional: "" },
-                            ]);
-                          }}
-                        >
-                          <AddIcon />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </TableContainer>
+              <Info />
+              <Cards />
               <Button
                 fullWidth
                 variant="contained"
@@ -300,13 +111,4 @@ export const AdminGameDetails = () => {
       </Paper>
     </Grid>
   );
-};
-
-const styles = {
-  cellInput: {
-    mt: 1,
-    mb: 1,
-    width: "98%",
-    minHeight: 50,
-  },
 };

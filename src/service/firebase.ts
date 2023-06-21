@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { v4 as uuidv4 } from "uuid";
 
 import {
   collection,
@@ -35,7 +36,7 @@ export const signInWithGoogle = () => signInWithPopup(auth, provider);
 
 const db = getFirestore();
 
-const USE_MOCKS = true;
+const USE_MOCKS = false;
 
 export const readGroupCollection: () => Promise<GroupType[]> = async () => {
   if (USE_MOCKS) {
@@ -69,7 +70,14 @@ export const readGameById: (id: string) => Promise<GameType> = async (
   const docRef = doc(db, "game", id);
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
-    return Promise.resolve({ ...(docSnap.data() as GameType), id });
+    const game = { ...(docSnap.data() as GameType), id };
+    return Promise.resolve({
+      ...game,
+      cards: game.cards.map((c) => ({
+        ...c,
+        uuid: uuidv4(),
+      })),
+    });
   }
   return Promise.reject(new Error(`No such document: ${id}`));
 };
@@ -80,14 +88,23 @@ export const writeGame: (
   if (USE_MOCKS) {
     return Promise.resolve();
   }
+  const dataWithoutUuid = {
+    ...data,
+    cards: data.cards.map((c) => ({
+      primary: c.primary,
+      secondary: c.secondary,
+      optional: c.optional,
+    })),
+  };
+
   if (data.id) {
     // update existing doc
     const docRef = doc(db, "game", data.id);
-    return setDoc(docRef, data);
+    return setDoc(docRef, dataWithoutUuid);
   } else {
     // Add a new document with a generated id.
     const collectionRef = collection(db, "game");
-    const res = await addDoc(collectionRef, data);
+    const res = await addDoc(collectionRef, dataWithoutUuid);
     return Promise.resolve({ id: res.id });
   }
 };
