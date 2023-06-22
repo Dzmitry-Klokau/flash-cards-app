@@ -8,10 +8,11 @@ import {
   Box,
   Theme,
 } from "@mui/material";
-import { useFormikContext } from "formik";
+import { FieldArray, useFormikContext, ArrayHelpers } from "formik";
 import { makeStyles } from "@mui/styles";
 import { AddCardRow } from "./add-card-row";
 import { CardRow } from "./card-row";
+import { useCallback, useEffect, useMemo } from "react";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -26,6 +27,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 export const Cards = () => {
   const classes = useStyles();
 
+  console.log("render Cards");
   return (
     <TableContainer component={Box} className={classes.root}>
       <Table className={classes.table}>
@@ -37,21 +39,60 @@ export const Cards = () => {
             <TableCell></TableCell>
           </TableRow>
         </TableHead>
-        <Body />
+        <TableBody>
+          <FieldArray
+            name="cards"
+            render={(arrayHelpers: ArrayHelpers) => (
+              <Body arrayHelpers={arrayHelpers} />
+            )}
+          ></FieldArray>
+          <AddCardRow />
+        </TableBody>
       </Table>
     </TableContainer>
   );
 };
 
-const Body = () => {
-  const { values } = useFormikContext<GameType>();
+const Body = ({ arrayHelpers }: { arrayHelpers: ArrayHelpers }) => {
+  const { values, errors, setErrors } = useFormikContext<GameType>();
+
+  const uuidS = useMemo(() => {
+    return values.cards.map((v) => v.uuid);
+  }, [values.cards]);
+
+  const handleRemove = useCallback(
+    (index: number) => arrayHelpers.remove(index),
+    [arrayHelpers]
+  );
+
+  const handleUp = useCallback(
+    (index: number) => arrayHelpers.swap(index - 1, index),
+    [arrayHelpers]
+  );
+
+  const handleDown = useCallback(
+    (index: number) => arrayHelpers.swap(index + 1, index),
+    [arrayHelpers]
+  );
+
+  useEffect(() => {
+    setErrors({});
+  }, [values, setErrors]);
 
   return (
-    <TableBody>
-      {values.cards.map((card) => (
-        <CardRow card={card} key={card.uuid} />
+    <>
+      {uuidS.map((uuid, index) => (
+        <CardRow
+          key={uuid}
+          index={index}
+          hasError={!!errors.cards?.[index]}
+          onRemove={handleRemove}
+          showUp={index !== 0}
+          onUp={handleUp}
+          showDown={index !== uuidS.length - 1}
+          onDown={handleDown}
+        />
       ))}
-      <AddCardRow />
-    </TableBody>
+    </>
   );
 };

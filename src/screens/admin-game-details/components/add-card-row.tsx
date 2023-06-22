@@ -1,16 +1,17 @@
 import { TableCell, TableRow, IconButton } from "@mui/material";
 import { Add as AddIcon } from "@mui/icons-material";
-import { useFormikContext } from "formik";
-import { makeStyles } from "@mui/styles";
+import { FormikProps, FormikValues, connect } from "formik";
+import { withStyles, WithStyles } from "@mui/styles";
 import { v4 as uuidv4 } from "uuid";
+import { Component } from "react";
 
-const useStyles = makeStyles(() => ({
+const styles = () => ({
   button: {
     display: "flex",
     justifyContent: "center",
     width: "100%",
   },
-}));
+});
 
 const emptyCard = (): CardType => ({
   primary: "",
@@ -19,22 +20,32 @@ const emptyCard = (): CardType => ({
   uuid: uuidv4(),
 });
 
-export const AddCardRow = () => {
-  const { setFieldValue, values } = useFormikContext<GameType>();
-  const classes = useStyles();
+type Props = {
+  formik: FormikProps<FormikValues>;
+} & WithStyles<typeof styles>;
 
-  return (
-    <TableRow>
-      <TableCell colSpan={4}>
-        <IconButton
-          className={classes.button}
-          onClick={() => {
-            setFieldValue("cards", [...values.cards, emptyCard()]);
-          }}
-        >
-          <AddIcon />
-        </IconButton>
-      </TableCell>
-    </TableRow>
-  );
-};
+class Row extends Component<Props> {
+  render() {
+    const { classes, formik } = this.props;
+
+    return (
+      <TableRow>
+        <TableCell colSpan={4}>
+          <IconButton
+            className={classes.button}
+            onClick={() => {
+              formik.setFieldValue("cards", [
+                ...formik.values.cards,
+                emptyCard(),
+              ]);
+            }}
+          >
+            <AddIcon />
+          </IconButton>
+        </TableCell>
+      </TableRow>
+    );
+  }
+}
+
+export const AddCardRow = withStyles(styles)(connect(Row));

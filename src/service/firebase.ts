@@ -36,7 +36,7 @@ export const signInWithGoogle = () => signInWithPopup(auth, provider);
 
 const db = getFirestore();
 
-const USE_MOCKS = false;
+const USE_MOCKS = true;
 
 export const readGroupCollection: () => Promise<GroupType[]> = async () => {
   if (USE_MOCKS) {

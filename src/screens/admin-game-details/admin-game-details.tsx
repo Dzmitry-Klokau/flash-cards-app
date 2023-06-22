@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { Grid, Paper, Button } from "@mui/material";
+import { Grid, Paper, Theme } from "@mui/material";
 import { isUndefined } from "lodash";
 import { useNavigate, useParams } from "react-router-dom";
 import { Formik } from "formik";
@@ -8,6 +8,8 @@ import { Formik } from "formik";
 import { readGameById, writeGame } from "../../service/firebase";
 import { object, string, array } from "yup";
 import { Cards, Info } from "./components";
+import { FormikSubmitBtn } from "../../shared/components";
+import { makeStyles } from "@mui/styles";
 
 const validationSchema = object({
   title: string().required(),
@@ -23,10 +25,18 @@ const validationSchema = object({
     ),
 });
 
+const useStyles = makeStyles((theme: Theme) => ({
+  button: {
+    marginTop: theme.spacing(6),
+    marginBottom: theme.spacing(2),
+  },
+}));
+
 export const AdminGameDetails = () => {
   const navigate = useNavigate();
   const [data, setData] = useState<GameType>();
   const params = useParams();
+  const classes = useStyles();
 
   useEffect(() => {
     const loadData = async (id: string) => {
@@ -47,6 +57,17 @@ export const AdminGameDetails = () => {
     }
   }, [params.id]);
 
+  const handleSubmit = async (data: GameType) => {
+    const res = await writeGame(data);
+    if (res?.id) {
+      navigate(res.id, {
+        relative: "path",
+      });
+    } else {
+      navigate(0);
+    }
+  };
+
   if (isUndefined(data)) {
     return null;
   }
@@ -65,48 +86,13 @@ export const AdminGameDetails = () => {
           validationSchema={validationSchema}
           validateOnBlur={true}
           validateOnChange={false}
-          onSubmit={async (data) => {
-            const res = await writeGame(data);
-            if (res?.id) {
-              navigate(res.id, {
-                relative: "path",
-              });
-            } else {
-              navigate(0);
-            }
-          }}
+          onSubmit={handleSubmit}
         >
-          {({ handleSubmit, setTouched, values, dirty, isValid }) => (
-            <>
-              <Info />
-              <Cards />
-              <Button
-                fullWidth
-                variant="contained"
-                sx={{ mt: 6, mb: 2 }}
-                onClick={() => {
-                  setTouched(
-                    {
-                      title: true,
-                      desc: true,
-                      cards: values.cards.map((_) => ({
-                        primary: true,
-                        secondary: true,
-                        optional: true,
-                      })),
-                    },
-                    true
-                  );
-                  if (dirty && isValid) {
-                    handleSubmit();
-                  }
-                }}
-                disabled={!dirty}
-              >
-                Save
-              </Button>
-            </>
-          )}
+          <>
+            <Info />
+            <Cards />
+            <FormikSubmitBtn className={classes.button} title={"Save"} />
+          </>
         </Formik>
       </Paper>
     </Grid>
