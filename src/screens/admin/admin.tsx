@@ -1,16 +1,26 @@
 import { useEffect, useState } from "react";
 import { Tabs, Box, Grid, Tab } from "@mui/material";
+import { useSearchParams } from "react-router-dom";
 
 import {
   readGameCollection,
   readGroupCollection,
 } from "../../service/firebase";
 import { GroupTab, GameTab } from "./tabs";
+import { isNull } from "lodash";
 
 export const AdminScreen = () => {
-  const [activeTab, setActiveTab] = useState(0);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const [activeTab, setActiveTab] = useState(
+    isNull(searchParams.get("tab")) ? 0 : +searchParams.get("tab")!
+  );
   const [groups, setGroups] = useState<Array<GroupType>>([]);
   const [games, setGames] = useState<Array<GameType>>([]);
+
+  useEffect(() => {
+    setSearchParams({ tab: `${activeTab}` });
+  }, [setSearchParams, activeTab]);
 
   useEffect(() => {
     const loadGroups = async () => {
@@ -24,6 +34,7 @@ export const AdminScreen = () => {
     loadGroups();
     loadGames();
   }, []);
+
 
   return (
     <Grid item xs={12} md={12} lg={12}>
