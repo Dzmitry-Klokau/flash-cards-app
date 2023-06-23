@@ -12,9 +12,10 @@ import { PlayArrow as PlayIcon } from "@mui/icons-material";
 import { makeStyles } from "@mui/styles";
 import { useNavigate } from "react-router-dom";
 
-import { mockGameList } from "../../mocks/mock-games";
 import { routes } from "../../navigation";
 import clsx from "clsx";
+import { useEffect, useState } from "react";
+import { readGameCollection } from "../../service/firebase";
 
 const useStyles = makeStyles((theme: Theme) => ({
   cardList: {
@@ -34,8 +35,17 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export const HomeScreen = () => {
   const classes = useStyles();
+  const [games, setGames] = useState<Array<GameType>>([]);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const loadGames = async () => {
+      const res = await readGameCollection();
+      setGames(res);
+    };
+    loadGames();
+  }, []);
 
   return (
     <Grid item xs={12} md={8} lg={9}>
@@ -50,7 +60,7 @@ export const HomeScreen = () => {
           Home
         </Typography>
         <Grid container spacing={3} className={classes.cardList}>
-          {mockGameList.map((g) => (
+          {games.map((g) => (
             <Grid item xs={12} lg={4} key={g.id}>
               <Card className={classes.card}>
                 <CardContent>
