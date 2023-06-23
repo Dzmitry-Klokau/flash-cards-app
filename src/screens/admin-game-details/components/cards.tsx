@@ -32,6 +32,7 @@ export const Cards = () => {
       <Table className={classes.table}>
         <TableHead>
           <TableRow>
+            <TableCell></TableCell>
             <TableCell>Primary</TableCell>
             <TableCell>Secondary</TableCell>
             <TableCell>Optional</TableCell>

@@ -95,16 +95,6 @@ class Row extends Component<Props, State> {
         <TableCell padding="none">
           {/* <Box className={classes.actions}> */}
           <Box sx={{ display: "flex", flexDirection: "row" }}>
-            {showUp && (
-              <IconButton
-                onClick={() => {
-                  this.setState({ highlight: true });
-                  onUp(this.props.index);
-                }}
-              >
-                <ArrowUpwardIcon />
-              </IconButton>
-            )}
             {showDown && (
               <IconButton
                 onClick={() => {
@@ -113,6 +103,16 @@ class Row extends Component<Props, State> {
                 }}
               >
                 <ArrowDownwardIcon />
+              </IconButton>
+            )}
+            {showUp && (
+              <IconButton
+                onClick={() => {
+                  this.setState({ highlight: true });
+                  onUp(this.props.index);
+                }}
+              >
+                <ArrowUpwardIcon />
               </IconButton>
             )}
           </Box>
