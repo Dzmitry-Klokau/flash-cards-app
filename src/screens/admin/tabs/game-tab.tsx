@@ -45,29 +45,24 @@ export const GameTab = ({ data, visible }: Props) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((row) => {
-              return (
-                <>
-                  <TableRow
-                    key={row.id}
-                    role="button"
-                    onClick={() => {
-                      navigate(
-                        `${routes["admin-game-details"].path}/${row.id}`,
-                        { relative: "path" }
-                      );
-                    }}
-                    sx={{
-                      "&:last-child td, &:last-child th": { border: 0 },
-                      cursor: "pointer",
-                    }}
-                  >
-                    <TableCell>{row.title}</TableCell>
-                    <TableCell>{row.desc}</TableCell>
-                  </TableRow>
-                </>
-              );
-            })}
+            {data.map((row) => (
+              <TableRow
+                key={row.id}
+                role="button"
+                onClick={() => {
+                  navigate(`${routes["admin-game-details"].path}/${row.id}`, {
+                    relative: "path",
+                  });
+                }}
+                sx={{
+                  "&:last-child td, &:last-child th": { border: 0 },
+                  cursor: "pointer",
+                }}
+              >
+                <TableCell>{row.title}</TableCell>
+                <TableCell>{row.desc}</TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </TableContainer>

@@ -22,6 +22,14 @@ type State = {
   highlight: boolean;
 };
 
+const cellInputStyle = {
+  marginTop: 1,
+  marginBottom: 1,
+  width: "98%",
+  minWidth: "150px",
+  minHeight: 50,
+};
+
 class Row extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
@@ -85,47 +93,8 @@ class Row extends Component<Props, State> {
     return (
       <TableRow sx={rowStyles}>
         <TableCell padding="none">
-          <TextField
-            // className={classes.cellInput}
-            autoComplete="off"
-            variant="outlined"
-            value={primary}
-            error={hasError}
-            onChange={(e) => {
-              formik.setFieldValue(`cards[${index}].primary`, e.target.value);
-            }}
-          />
-        </TableCell>
-        <TableCell padding="none">
-          <TextField
-            // className={classes.cellInput}
-            autoComplete="off"
-            variant="outlined"
-            value={secondary}
-            error={hasError}
-            onChange={(e) => {
-              formik.setFieldValue(`cards[${index}].secondary`, e.target.value);
-            }}
-          />
-        </TableCell>
-        <TableCell padding="none">
-          <TextField
-            // className={classes.cellInput}
-            autoComplete="off"
-            variant="outlined"
-            value={optional}
-            error={hasError}
-            onChange={(e) => {
-              formik.setFieldValue(`cards[${index}].optional`, e.target.value);
-            }}
-          />
-        </TableCell>
-        <TableCell padding="none">
           {/* <Box className={classes.actions}> */}
           <Box sx={{ display: "flex", flexDirection: "row" }}>
-            <IconButton onClick={() => onRemove(this.props.index)}>
-              <DeleteIcon />
-            </IconButton>
             {showUp && (
               <IconButton
                 onClick={() => {
@@ -147,6 +116,47 @@ class Row extends Component<Props, State> {
               </IconButton>
             )}
           </Box>
+        </TableCell>
+        <TableCell padding="none">
+          <TextField
+            sx={cellInputStyle}
+            autoComplete="off"
+            variant="outlined"
+            value={primary}
+            error={hasError}
+            onChange={(e) => {
+              formik.setFieldValue(`cards[${index}].primary`, e.target.value);
+            }}
+          />
+        </TableCell>
+        <TableCell padding="none">
+          <TextField
+            sx={cellInputStyle}
+            autoComplete="off"
+            variant="outlined"
+            value={secondary}
+            error={hasError}
+            onChange={(e) => {
+              formik.setFieldValue(`cards[${index}].secondary`, e.target.value);
+            }}
+          />
+        </TableCell>
+        <TableCell padding="none">
+          <TextField
+            sx={cellInputStyle}
+            autoComplete="off"
+            variant="outlined"
+            value={optional}
+            error={hasError}
+            onChange={(e) => {
+              formik.setFieldValue(`cards[${index}].optional`, e.target.value);
+            }}
+          />
+        </TableCell>
+        <TableCell padding="none">
+          <IconButton onClick={() => onRemove(this.props.index)}>
+            <DeleteIcon />
+          </IconButton>
         </TableCell>
       </TableRow>
     );
