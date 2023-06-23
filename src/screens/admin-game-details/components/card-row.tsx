@@ -18,8 +18,20 @@ type Props = {
   onDown: (index: number) => void;
 };
 
-class Row extends Component<Props> {
-  shouldComponentUpdate(nextProps: Readonly<Props>): boolean {
+type State = {
+  highlight: boolean;
+};
+
+class Row extends Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = { highlight: false };
+  }
+
+  shouldComponentUpdate(
+    nextProps: Readonly<Props>,
+    nextState: Readonly<State>
+  ): boolean {
     const { formik, index } = this.props;
     const { formik: nextFormik, index: nextIndex } = nextProps;
 
@@ -37,7 +49,8 @@ class Row extends Component<Props> {
       card !== nextCard ||
       hasError !== nextHasError ||
       showUp !== nextShowUp ||
-      showDown !== nextShowDown
+      showDown !== nextShowDown ||
+      this.state.highlight !== nextState.highlight
     ) {
       return true;
     }
@@ -59,8 +72,18 @@ class Row extends Component<Props> {
 
     const { primary, secondary, optional } = formik.values.cards[index];
 
+    let rowStyles = {};
+    if (this.state.highlight) {
+      rowStyles = {
+        backgroundColor: "rgba(25, 118, 210, 0.5)",
+      };
+      setTimeout(() => {
+        this.setState({ highlight: false });
+      }, 300);
+    }
+
     return (
-      <TableRow>
+      <TableRow sx={rowStyles}>
         <TableCell padding="none">
           <TextField
             // className={classes.cellInput}
@@ -100,17 +123,13 @@ class Row extends Component<Props> {
         <TableCell padding="none">
           {/* <Box className={classes.actions}> */}
           <Box sx={{ display: "flex", flexDirection: "row" }}>
-            <IconButton
-              onClick={() => {
-                console.log(this.props.index);
-                onRemove(this.props.index);
-              }}
-            >
+            <IconButton onClick={() => onRemove(this.props.index)}>
               <DeleteIcon />
             </IconButton>
             {showUp && (
               <IconButton
                 onClick={() => {
+                  this.setState({ highlight: true });
                   onUp(this.props.index);
                 }}
               >
@@ -120,6 +139,7 @@ class Row extends Component<Props> {
             {showDown && (
               <IconButton
                 onClick={() => {
+                  this.setState({ highlight: true });
                   onDown(this.props.index);
                 }}
               >

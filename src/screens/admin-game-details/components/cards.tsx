@@ -12,7 +12,7 @@ import { FieldArray, useFormikContext, ArrayHelpers } from "formik";
 import { makeStyles } from "@mui/styles";
 import { AddCardRow } from "./add-card-row";
 import { CardRow } from "./card-row";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -27,7 +27,6 @@ const useStyles = makeStyles((theme: Theme) => ({
 export const Cards = () => {
   const classes = useStyles();
 
-  console.log("render Cards");
   return (
     <TableContainer component={Box} className={classes.root}>
       <Table className={classes.table}>
@@ -55,10 +54,16 @@ export const Cards = () => {
 
 const Body = ({ arrayHelpers }: { arrayHelpers: ArrayHelpers }) => {
   const { values, errors, setErrors } = useFormikContext<GameType>();
+  const highlight = useRef<number>();
 
   const uuidS = useMemo(() => {
     return values.cards.map((v) => v.uuid);
   }, [values.cards]);
+
+  const doHighlight = (index: number) => {
+    highlight.current = index;
+    setTimeout(() => (highlight.current = undefined), 500);
+  };
 
   const handleRemove = useCallback(
     (index: number) => arrayHelpers.remove(index),
@@ -66,12 +71,18 @@ const Body = ({ arrayHelpers }: { arrayHelpers: ArrayHelpers }) => {
   );
 
   const handleUp = useCallback(
-    (index: number) => arrayHelpers.swap(index - 1, index),
+    (index: number) => {
+      arrayHelpers.swap(index - 1, index);
+      doHighlight(index);
+    },
     [arrayHelpers]
   );
 
   const handleDown = useCallback(
-    (index: number) => arrayHelpers.swap(index + 1, index),
+    (index: number) => {
+      arrayHelpers.swap(index + 1, index);
+      doHighlight(index);
+    },
     [arrayHelpers]
   );
 

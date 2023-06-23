@@ -4,68 +4,99 @@ import {
   Typography,
   Toolbar,
   AppBar as MuiAppBar,
+  Box,
+  Theme,
 } from "@mui/material";
 import {
   Menu as MenuIcon,
   Notifications as NotificationsIcon,
+  ArrowCircleLeftOutlined as BackIcon,
 } from "@mui/icons-material";
-import { matchRoutes, useLocation } from "react-router-dom";
+import { matchRoutes, useLocation, useNavigate } from "react-router-dom";
 import { capitalize } from "lodash";
 
 import routes from "../../routes";
+import { makeStyles } from "@mui/styles";
 
 type Props = {
   toggleDrawer: VoidFunction;
 };
 
-export const AppBar = ({ toggleDrawer }: Props) => (
-  <MuiAppBar
-    position="absolute"
-    sx={{
-      // zIndex: theme.zIndex.drawer + 1,
-      zIndex: 9999,
-    }}
-  >
-    <Toolbar>
-      <IconButton
-        edge="start"
-        color="inherit"
-        aria-label="open drawer"
-        onClick={toggleDrawer}
-        sx={{
-          marginRight: "36px",
-        }}
-      >
-        <MenuIcon />
-      </IconButton>
-      <RouteLabel />
-      <IconButton color="inherit">
-        <Badge badgeContent={4} color="secondary">
-          <NotificationsIcon />
-        </Badge>
-      </IconButton>
-    </Toolbar>
-  </MuiAppBar>
-);
+const useStyles = makeStyles((theme: Theme) => ({
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1,
+  },
+  iconBtn: {
+    marginRight: "36px",
+  },
+  placeholder: { flexGrow: 1 },
+}));
 
 const routesArr = Object.entries(routes).map(([name, value]) => ({
   name,
   ...value,
 }));
 
-const RouteLabel = () => {
+export const AppBar = ({ toggleDrawer }: Props) => {
+  const classes = useStyles();
+
+  return (
+    <MuiAppBar position="absolute" className={classes.appBar}>
+      <Toolbar>
+        <LeftIcon toggleDrawer={toggleDrawer} />
+        <IconButton color="inherit">
+          <Badge badgeContent={4} color="secondary">
+            <NotificationsIcon />
+          </Badge>
+        </IconButton>
+      </Toolbar>
+    </MuiAppBar>
+  );
+};
+
+const LeftIcon = ({ toggleDrawer }: Props) => {
+  const classes = useStyles();
+  const navigate = useNavigate();
   const location = useLocation();
   const matchedRoute = matchRoutes(routesArr, location);
 
+  if (matchedRoute) {
+    return (
+      <>
+        <IconButton
+          className={classes.iconBtn}
+          edge="start"
+          color="inherit"
+          aria-label="open drawer"
+          onClick={toggleDrawer}
+        >
+          <MenuIcon />
+        </IconButton>
+        <Typography
+          className={classes.placeholder}
+          component="h1"
+          variant="h6"
+          color="inherit"
+          noWrap
+        >
+          {capitalize(matchedRoute[0].route.name.toString())}
+        </Typography>
+      </>
+    );
+  }
+
   return (
-    <Typography
-      component="h1"
-      variant="h6"
-      color="inherit"
-      noWrap
-      sx={{ flexGrow: 1 }}
-    >
-      {matchedRoute ? capitalize(matchedRoute[0].route.name.toString()) : ""}
-    </Typography>
+    <>
+      <IconButton
+        className={classes.iconBtn}
+        edge="start"
+        color="inherit"
+        aria-label="open drawer"
+        onClick={() => navigate(-1)}
+      >
+        <BackIcon />
+      </IconButton>
+      <Box className={classes.placeholder} />
+    </>
   );
 };
