@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import {
   Grid,
-  Paper,
   Checkbox,
   Theme,
   DialogTitle,
@@ -18,12 +17,6 @@ import { readGameById } from "../../service/firebase";
 import { Header, Item } from "./components";
 
 const useStyles = makeStyles((theme: Theme) => ({
-  root: {
-    p: 2,
-    display: "flex",
-    flexDirection: "column",
-    minHeight: "60vh",
-  },
   container: {
     marginTop: theme.spacing(2),
   },
@@ -65,32 +58,30 @@ export const PlayerScreen = () => {
 
   return (
     <Grid item xs={12} md={8} lg={9}>
-      <Paper className={classes.root}>
-        <Header
-          title={data.title}
-          onSettingsPress={() => setDialogVisible(true)}
-        />
-        <Item
-          className={classes.container}
-          key={activeStep}
-          item={data.cards[activeStep]}
-          onNext={handleNext}
-        />
-        <Dialog
-          onClose={() => setDialogVisible((prev) => !prev)}
-          open={dialogVisible}
-        >
-          <DialogTitle>Settings</DialogTitle>
-          <DialogContent>
-            <Typography>
-              Random
-              <IconButton onClick={() => setRandom((prev) => !prev)}>
-                <Checkbox disabled checked={random} />
-              </IconButton>
-            </Typography>
-          </DialogContent>
-        </Dialog>
-      </Paper>
+      <Header
+        title={data.title}
+        onSettingsPress={() => setDialogVisible(true)}
+      />
+      <Item
+        className={classes.container}
+        key={activeStep}
+        item={data.cards[activeStep]}
+        onNext={handleNext}
+      />
+      <Dialog
+        onClose={() => setDialogVisible((prev) => !prev)}
+        open={dialogVisible}
+      >
+        <DialogTitle>Settings</DialogTitle>
+        <DialogContent>
+          <Typography>
+            Random
+            <IconButton onClick={() => setRandom((prev) => !prev)}>
+              <Checkbox disabled checked={random} />
+            </IconButton>
+          </Typography>
+        </DialogContent>
+      </Dialog>
     </Grid>
   );
 };

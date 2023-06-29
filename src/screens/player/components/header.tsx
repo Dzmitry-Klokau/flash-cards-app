@@ -4,22 +4,20 @@ import { Settings as SettingsIcon } from "@mui/icons-material";
 import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme: Theme) => ({
+  titleRow: {
+    display: "grid",
+    gridTemplateColumns: "repeat(3, 1fr)",
+    gridTemplateAreas: `". title settings"`,
+    alignItems: "center",
+  },
   title: {
     gridArea: "title",
-    marginTop: theme.spacing(4),
     textAlign: "center",
   },
   settings: {
     gridArea: "settings",
     display: "flex",
     justifyContent: "flex-end",
-    padding: theme.spacing(2),
-  },
-  titleRow: {
-    display: "grid",
-    gridTemplateColumns: "repeat(3, 1fr)",
-    gridTemplateAreas: `". title settings"`,
-    alignItems: "center",
   },
 }));
 

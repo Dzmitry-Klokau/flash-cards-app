@@ -16,7 +16,7 @@ export const StyledThemeProvider = ({ children }: { children: ReactNode }) => {
             main: blue[800],
           },
           secondary: {
-            main: mode === "light" ? grey[100] : grey[800],
+            main: grey[100],
             dark: "red",
           },
         },

@@ -24,12 +24,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   cardContent: {
     padding: theme.spacing(4),
-    [theme.breakpoints.down("md")]: {
-      minHeight: 250,
-    },
-    [theme.breakpoints.up("md")]: {
-      height: "50vh",
-    },
+    minHeight: "50vh",
   },
   text: { textAlign: "center" },
 }));
@@ -48,7 +43,6 @@ const WrappedCard = styled(Card, {
 })<CardProps>(({ theme, answerState }) => ({
   margin: theme.spacing(2),
   width: "100%",
-  backgroundColor: theme.palette.secondary.main,
   transition: theme.transitions.create("all", {
     easing: theme.transitions.easing.easeInOut,
     duration: ANIMATION_DURATION,
