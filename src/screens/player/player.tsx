@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from "react";
 import {
   Grid,
   Paper,
-  Box,
   Checkbox,
   Theme,
   DialogTitle,
@@ -16,35 +15,17 @@ import { isUndefined } from "lodash";
 import { makeStyles } from "@mui/styles";
 
 import { readGameById } from "../../service/firebase";
-import { Arrow, Header, Item } from "./components";
+import { Header, Item } from "./components";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     p: 2,
     display: "flex",
     flexDirection: "column",
+    minHeight: "60vh",
   },
   container: {
     marginTop: theme.spacing(2),
-    display: "grid",
-    [theme.breakpoints.up("md")]: {
-      gridTemplateColumns: "repeat(5, 1fr)",
-      gridTemplateAreas: `"left item item item right"`,
-    },
-    [theme.breakpoints.down("md")]: {
-      gridTemplateColumns: "repeat(2, 1fr)",
-      gridTemplateAreas: `"item item"
-                          "left right"`,
-    },
-  },
-  left: {
-    gridArea: "left",
-  },
-  item: {
-    gridArea: "item",
-  },
-  right: {
-    gridArea: "right",
   },
 }));
 
@@ -78,16 +59,6 @@ export const PlayerScreen = () => {
     });
   }, [data?.cards.length, random]);
 
-  const handleBack = () => {
-    if (random) {
-      setActiveStep(Math.floor(Math.random() * (data?.cards.length ?? 0)));
-    }
-    setActiveStep((prevActiveStep) => {
-      const next = prevActiveStep - 1;
-      return next >= 0 ? next : (data?.cards.length ?? 0) - 1;
-    });
-  };
-
   if (isUndefined(data)) {
     return null;
   }
@@ -99,24 +70,12 @@ export const PlayerScreen = () => {
           title={data.title}
           onSettingsPress={() => setDialogVisible(true)}
         />
-        <Box className={classes.container}>
-          <Arrow
-            className={classes.left}
-            direction="left"
-            onPress={handleBack}
-          />
-          <Item
-            className={classes.item}
-            key={activeStep}
-            item={data.cards[activeStep]}
-          />
-          <Arrow
-            className={classes.right}
-            direction="right"
-            onPress={handleNext}
-          />
-        </Box>
-
+        <Item
+          className={classes.container}
+          key={activeStep}
+          item={data.cards[activeStep]}
+          onNext={handleNext}
+        />
         <Dialog
           onClose={() => setDialogVisible((prev) => !prev)}
           open={dialogVisible}

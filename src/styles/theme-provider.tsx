@@ -1,6 +1,6 @@
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { ReactNode, useMemo } from "react";
-import { green, purple } from "@mui/material/colors";
+import { blue, grey } from "@mui/material/colors";
 
 import { useColorModeContext } from "../shared/context";
 
@@ -13,10 +13,11 @@ export const StyledThemeProvider = ({ children }: { children: ReactNode }) => {
         palette: {
           mode,
           primary: {
-            main: purple[500],
+            main: blue[800],
           },
           secondary: {
-            main: green[500],
+            main: mode === "light" ? grey[300] : grey[800],
+            dark: "red",
           },
         },
       }),

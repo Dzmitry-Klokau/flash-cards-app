@@ -33,9 +33,7 @@ export const Header = ({ title, onSettingsPress }: Props) => {
 
   return (
     <Box className={classes.titleRow}>
-      <Typography variant="h5" className={classes.title}>
-        {title}
-      </Typography>
+      <Typography className={classes.title}>{title}</Typography>
       <Box className={classes.settings}>
         <IconButton onClick={onSettingsPress}>
           <SettingsIcon />
