@@ -1,5 +1,5 @@
 declare type GroupType = {
-  id: string;
+  id?: string;
   title: string;
   desc: string;
 };

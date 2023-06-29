@@ -82,6 +82,22 @@ export const readGameById: (id: string) => Promise<GameType> = async (
   return Promise.reject(new Error(`No such document: ${id}`));
 };
 
+export const readGroupById: (id: string) => Promise<GroupType> = async (
+  id: string
+) => {
+  if (USE_MOCKS) {
+    const group = mockGroupList.find((g) => g.id === id);
+    return Promise.resolve(group ?? mockGroupList[0]);
+  }
+  const docRef = doc(db, "group", id);
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    const group = { ...(docSnap.data() as GroupType), id };
+    return Promise.resolve(group);
+  }
+  return Promise.reject(new Error(`No such document: ${id}`));
+};
+
 export const writeGame: (
   data: GameType
 ) => Promise<void | { id: string }> = async (data: GameType) => {
@@ -105,6 +121,25 @@ export const writeGame: (
     // Add a new document with a generated id.
     const collectionRef = collection(db, "game");
     const res = await addDoc(collectionRef, dataWithoutUuid);
+    return Promise.resolve({ id: res.id });
+  }
+};
+
+export const writeGroup: (
+  data: GroupType
+) => Promise<void | { id: string }> = async (data: GroupType) => {
+  if (USE_MOCKS) {
+    return Promise.resolve();
+  }
+
+  if (data.id) {
+    // update existing doc
+    const docRef = doc(db, "group", data.id);
+    return setDoc(docRef, data);
+  } else {
+    // Add a new document with a generated id.
+    const collectionRef = collection(db, "group");
+    const res = await addDoc(collectionRef, data);
     return Promise.resolve({ id: res.id });
   }
 };

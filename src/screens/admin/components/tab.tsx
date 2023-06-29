@@ -9,19 +9,16 @@ import {
   Paper,
   IconButton,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 import { Add as AddIcon } from "@mui/icons-material";
-
-import { routes } from "../../../navigation";
 
 type Props = {
   visible: boolean;
-  data: Array<GameType>;
+  data: Array<GameType | GroupType>;
+  onAddPress: VoidFunction;
+  onRowPress: (id: string) => void;
 };
 
-export const GameTab = ({ data, visible }: Props) => {
-  const navigate = useNavigate();
-
+export const Tab = ({ data, visible, onAddPress, onRowPress }: Props) => {
   if (isEmpty(data) || !visible) return null;
 
   return (
@@ -32,13 +29,7 @@ export const GameTab = ({ data, visible }: Props) => {
             <TableRow>
               <TableCell>Title</TableCell>
               <TableCell align="right">
-                <IconButton
-                  onClick={() => {
-                    navigate(routes["admin-game-details"].path, {
-                      relative: "path",
-                    });
-                  }}
-                >
+                <IconButton onClick={onAddPress}>
                   <AddIcon />
                 </IconButton>
               </TableCell>
@@ -50,16 +41,14 @@ export const GameTab = ({ data, visible }: Props) => {
                 key={row.id}
                 role="button"
                 onClick={() => {
-                  navigate(`${routes["admin-game-details"].path}/${row.id}`, {
-                    relative: "path",
-                  });
+                  row.id && onRowPress(row.id);
                 }}
                 sx={{
                   "&:last-child td, &:last-child th": { border: 0 },
                   cursor: "pointer",
                 }}
               >
-                <TableCell>{row.title}</TableCell>
+                <TableCell sx={{ width: "30vw" }}>{row.title}</TableCell>
                 <TableCell>{row.desc}</TableCell>
               </TableRow>
             ))}

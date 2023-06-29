@@ -13,6 +13,7 @@ export const routes: Routes = {
   games: { path: "games", Icon: GameIcon },
   admin: { path: "admin", Icon: AdminIcon },
   "admin-game-details": { path: "admin-game-details" },
+  "admin-group-details": { path: "admin-group-details" },
   player: { path: "player" },
 };
 

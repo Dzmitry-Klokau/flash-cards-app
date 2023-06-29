@@ -2,6 +2,7 @@ declare type RouteName =
   | "home"
   | "admin"
   | "admin-game-details"
+  | "admin-group-details"
   | "profile"
   | "settings"
   | "games"

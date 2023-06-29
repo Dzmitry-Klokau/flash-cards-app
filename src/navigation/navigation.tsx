@@ -10,6 +10,7 @@ import {
   AdminGameDetails,
   SignIn,
   PlayerScreen,
+  AdminGroupDetails,
 } from "../screens";
 
 import { Layout } from "./layout";
@@ -60,6 +61,14 @@ const router = createHashRouter([
           {
             path: `${routes["admin-game-details"].path}/:id`,
             Component: AdminGameDetails,
+          },
+          {
+            path: routes["admin-group-details"].path,
+            Component: AdminGroupDetails,
+          },
+          {
+            path: `${routes["admin-group-details"].path}/:id`,
+            Component: AdminGroupDetails,
           },
         ],
       },

@@ -5,30 +5,20 @@ import { isUndefined } from "lodash";
 import { useNavigate, useParams } from "react-router-dom";
 import { Formik } from "formik";
 
-import { readGameById, writeGame } from "../../service/firebase";
-import { object, string, array } from "yup";
-import { Cards, Info } from "./components";
+import { readGroupById, writeGroup } from "../../service/firebase";
+import { object, string } from "yup";
+import { Info } from "./components";
 import { FormikSubmitBtn } from "../../shared/components";
 import { makeStyles } from "@mui/styles";
 
-const emptyGame: GameType = {
+const emptyGroup: GroupType = {
   title: "",
   desc: "",
-  cards: [],
 };
 
 const validationSchema = object({
   title: string().required(),
   desc: string().required(),
-  cards: array()
-    .required()
-    .of(
-      object({
-        primary: string().required(),
-        secondary: string().required(),
-        optional: string().required(),
-      })
-    ),
 });
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -38,28 +28,28 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export const AdminGameDetails = () => {
+export const AdminGroupDetails = () => {
   const navigate = useNavigate();
-  const [data, setData] = useState<GameType>();
+  const [data, setData] = useState<GroupType>();
   const params = useParams();
   const classes = useStyles();
 
   useEffect(() => {
     const loadData = async (id: string) => {
-      const res = await readGameById(id);
+      const res = await readGroupById(id);
       setData(res);
     };
     if (params.id) {
-      // esiting game
+      // esiting group
       loadData(params.id);
     } else {
       // new game
-      setData(emptyGame);
+      setData(emptyGroup);
     }
   }, [params.id]);
 
-  const handleSubmit = async (data: GameType) => {
-    const res = await writeGame(data);
+  const handleSubmit = async (data: GroupType) => {
+    const res = await writeGroup(data);
     if (res?.id) {
       navigate(res.id, {
         relative: "path",
@@ -91,7 +81,6 @@ export const AdminGameDetails = () => {
         >
           <>
             <Info />
-            <Cards />
             <FormikSubmitBtn className={classes.button} title={"Save"} />
           </>
         </Formik>
