@@ -48,17 +48,26 @@ const WrappedCard = styled(Card, {
 })<CardProps>(({ theme, answerState }) => ({
   margin: theme.spacing(2),
   width: "100%",
-  marginLeft: 0,
   backgroundColor: theme.palette.secondary.main,
   transition: theme.transitions.create("all", {
     easing: theme.transitions.easing.easeInOut,
     duration: ANIMATION_DURATION,
   }),
   ...(answerState === undefined && {
-    marginLeft: -4000,
+    [theme.breakpoints.down("md")]: {
+      marginLeft: -500,
+    },
+    [theme.breakpoints.up("md")]: {
+      marginLeft: -2000,
+    },
   }),
   ...(answerState === "closed" && {
-    marginRight: -4000,
+    [theme.breakpoints.down("md")]: {
+      marginRight: -1000,
+    },
+    [theme.breakpoints.up("md")]: {
+      marginRight: -4000,
+    },
   }),
   ...(answerState === "visible" && {
     transform: "rotateY(180deg)",
@@ -94,14 +103,16 @@ export const Item = ({ item, className, onNext }: Props) => {
   const [answerState, setAnswerState] = useState<AnswerState>();
 
   useEffect(() => {
-    setAnswerState("hidden");
+    setTimeout(() => {
+      setAnswerState("hidden");
+    }, 0);
   }, []);
 
   useEffect(() => {
     if (answerState === "closed") {
       setTimeout(() => {
         onNext();
-      }, ANIMATION_DURATION / 2);
+      }, ANIMATION_DURATION);
     }
   }, [answerState, onNext]);
 
