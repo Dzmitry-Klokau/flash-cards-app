@@ -9,14 +9,16 @@ import {
 } from "@mui/material";
 import {
   Menu as MenuIcon,
-  Notifications as NotificationsIcon,
+  DarkMode as DarkModeIcon,
   ArrowCircleLeftOutlined as BackIcon,
+  LightMode as LightModeIcon,
 } from "@mui/icons-material";
 import { matchRoutes, useLocation, useNavigate } from "react-router-dom";
 import { capitalize } from "lodash";
 
 import routes from "../../routes";
 import { makeStyles } from "@mui/styles";
+import { useColorModeContext } from "../../../shared/context";
 
 type Props = {
   toggleDrawer: VoidFunction;
@@ -39,15 +41,14 @@ const routesArr = Object.entries(routes).map(([name, value]) => ({
 
 export const AppBar = ({ toggleDrawer }: Props) => {
   const classes = useStyles();
+  const { mode, toggleColorMode } = useColorModeContext();
 
   return (
     <MuiAppBar position="absolute" className={classes.appBar}>
       <Toolbar>
         <LeftIcon toggleDrawer={toggleDrawer} />
-        <IconButton color="inherit">
-          <Badge badgeContent={4} color="secondary">
-            <NotificationsIcon />
-          </Badge>
+        <IconButton color="inherit" onClick={toggleColorMode}>
+          {mode === "light" ? <DarkModeIcon /> : <LightModeIcon />}
         </IconButton>
       </Toolbar>
     </MuiAppBar>

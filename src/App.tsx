@@ -1,16 +1,16 @@
 import "./App.css";
 
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-
 import { Navigation } from "./navigation";
-
-const defaultTheme = createTheme();
+import { ColorModeContextProvider } from "./shared/context";
+import { StyledThemeProvider } from "./styles";
 
 function App() {
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Navigation />
-    </ThemeProvider>
+    <ColorModeContextProvider>
+      <StyledThemeProvider>
+        <Navigation />
+      </StyledThemeProvider>
+    </ColorModeContextProvider>
   );
 }
 
