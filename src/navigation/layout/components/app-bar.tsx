@@ -1,5 +1,4 @@
 import {
-  Badge,
   IconButton,
   Typography,
   Toolbar,
