@@ -7,7 +7,7 @@ import { Formik } from "formik";
 
 import { readGroupById, writeGroup } from "../../service/firebase";
 import { object, string } from "yup";
-import { Info } from "./components";
+import { Info, Subcategories } from "./components";
 import { FormikSubmitBtn } from "../../shared/components";
 import { makeStyles } from "@mui/styles";
 
@@ -81,6 +81,7 @@ export const AdminGroupDetails = () => {
         >
           <>
             <Info />
+            <Subcategories />
             <FormikSubmitBtn className={classes.button} title={"Save"} />
           </>
         </Formik>

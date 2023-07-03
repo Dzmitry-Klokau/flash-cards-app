@@ -10,7 +10,7 @@ export const SignIn = () => (
     <Box
       sx={{
         marginTop: 8,
-        height: "100vh",
+        height: "80vh",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
