@@ -1,7 +1,23 @@
+declare type GameIdsType = {
+  id: string;
+  title: string;
+};
+
+declare type GameType = GameIdsType & {
+  desc: string;
+  cards: Array<CardType>;
+};
+
+declare type GroupCategoryNode = {
+  name: string;
+  games: Array<GameIdsType>;
+};
+
 declare type GroupType = {
-  id?: string;
+  id: string;
   title: string;
   desc: string;
+  categories: Array<GroupCategoryNode>;
 };
 
 declare type CardType = {
@@ -9,11 +25,4 @@ declare type CardType = {
   primary: string;
   secondary: string;
   optional: string;
-};
-
-declare type GameType = {
-  id?: string;
-  title: string;
-  desc: string;
-  cards: Array<CardType>;
 };

@@ -13,7 +13,7 @@ import {
   addDoc,
 } from "firebase/firestore";
 import { mockGroupList } from "../mocks";
-import { mockGameList } from "../mocks/mock-games";
+import { mockGameList, mockGameNameList } from "../mocks/mock-games";
 
 const firebaseConfig = {
   apiKey: "AIzaSyD2tgDEs-frkZrQ18SCcXDkzC1Ju_1hgzg",
@@ -57,6 +57,17 @@ export const readGameCollection: () => Promise<GameType[]> = async () => {
   const querySnapshot = await getDocs(q);
   return querySnapshot.docs.map((doc) => {
     return { ...doc.data(), id: doc.id } as GameType;
+  });
+};
+
+export const readAllGameIds: () => Promise<GameIdsType[]> = async () => {
+  if (USE_MOCKS) {
+    return Promise.resolve(mockGameNameList);
+  }
+  const q = query(collection(db, "game"));
+  const querySnapshot = await getDocs(q);
+  return querySnapshot.docs.map((doc) => {
+    return { id: doc.id, title: doc.data().title } as GameIdsType;
   });
 };
 

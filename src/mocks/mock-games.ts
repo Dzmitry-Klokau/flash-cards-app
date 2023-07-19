@@ -508,3 +508,8 @@ export const mockGameList: Array<GameType> = [
     ],
   },
 ];
+
+export const mockGameNameList: Array<GameIdsType> = mockGameList.map((g) => ({
+  id: g.id,
+  title: g.title,
+}));

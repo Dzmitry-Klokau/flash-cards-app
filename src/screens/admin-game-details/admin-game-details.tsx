@@ -1,17 +1,19 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
-import { Grid, Paper, Theme } from "@mui/material";
+import { Grid, Paper, TextField, Theme } from "@mui/material";
 import { isUndefined } from "lodash";
 import { useNavigate, useParams } from "react-router-dom";
 import { Formik } from "formik";
+import { v4 as uuidv4 } from "uuid";
 
 import { readGameById, writeGame } from "../../service/firebase";
 import { object, string, array } from "yup";
-import { Cards, Info } from "./components";
-import { FormikSubmitBtn } from "../../shared/components";
+import { Info } from "./components";
+import { FormikSubmitBtn, Table } from "../../shared/components";
 import { makeStyles } from "@mui/styles";
 
 const emptyGame: GameType = {
+  id: "",
   title: "",
   desc: "",
   cards: [],
@@ -69,6 +71,22 @@ export const AdminGameDetails = () => {
     }
   };
 
+  const renderCell: RenderCellFunc = useCallback(
+    (name, rowIndex, formik, hasError, sx) => (
+      <TextField
+        sx={sx}
+        autoComplete="off"
+        variant="outlined"
+        value={formik.values.cards[rowIndex][name]}
+        error={hasError}
+        onChange={(e) => {
+          formik.setFieldValue(`cards[${rowIndex}].${name}`, e.target.value);
+        }}
+      />
+    ),
+    []
+  );
+
   if (isUndefined(data)) {
     return null;
   }
@@ -91,7 +109,18 @@ export const AdminGameDetails = () => {
         >
           <>
             <Info />
-            <Cards />
+            <Table
+              tableName="cards"
+              titles={["Primary", "Secondary", "Optional"]}
+              valueNames={["primary", "secondary", "optional"]}
+              createNewItem={() => ({
+                primary: "",
+                secondary: "",
+                optional: "",
+                uuid: uuidv4(),
+              })}
+              renderCell={renderCell}
+            />
             <FormikSubmitBtn className={classes.button} title={"Save"} />
           </>
         </Formik>
