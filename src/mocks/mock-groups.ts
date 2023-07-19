@@ -1,3 +1,5 @@
+import { mockGameList } from "./mock-games";
+
 export const mockGroupList: Array<GroupType> = [
   {
     title: "LT",
@@ -16,7 +18,10 @@ export const mockGroupList: Array<GroupType> = [
       },
       {
         name: "test 2",
-        games: [{ id: "i7vUjv9kYnrdhnnepDpy", title: "Общие фразы2" }],
+        games: [
+          { id: mockGameList[0].id, title: mockGameList[0].title },
+          { id: mockGameList[1].id, title: mockGameList[1].title },
+        ],
       },
     ],
   },

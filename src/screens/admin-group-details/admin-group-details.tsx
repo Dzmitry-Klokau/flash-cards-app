@@ -7,6 +7,7 @@ import {
   Chip,
   TextField,
   Theme,
+  Typography,
 } from "@mui/material";
 import { isUndefined } from "lodash";
 import { useNavigate, useParams } from "react-router-dom";
@@ -120,7 +121,6 @@ export const AdminGroupDetails = () => {
           options={gameData}
           getOptionLabel={(option) => option?.title || ""}
           value={row.games}
-          defaultValue={[]}
           onChange={(_e, value) => {
             formik.setFieldValue(`categories[${rowIndex}].games`, value);
           }}
@@ -148,8 +148,22 @@ export const AdminGroupDetails = () => {
               );
             })
           }
+          renderOption={(props, option) => {
+            const selected = row.games.find(
+              (e: GameIdsType) => e.id === option.id
+            );
+            if (selected) {
+              return null;
+            }
+            return <Typography {...props}>{option.title}</Typography>;
+          }}
           renderInput={(params) => (
-            <TextField {...params} sx={sx} variant="outlined" />
+            <TextField
+              {...params}
+              sx={sx}
+              variant="outlined"
+              value={row.games}
+            />
           )}
         />
       );
