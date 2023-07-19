@@ -2,7 +2,6 @@ import {
   Grid,
   Button,
   Typography,
-  Paper,
   Card,
   CardContent,
   CardActions,
@@ -11,7 +10,6 @@ import {
 import { PlayArrow as PlayIcon } from "@mui/icons-material";
 import { makeStyles } from "@mui/styles";
 import { useNavigate } from "react-router-dom";
-import clsx from "clsx";
 
 import { routes } from "../../../navigation";
 

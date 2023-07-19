@@ -1,8 +1,6 @@
 import {
-  Card,
   Typography,
   Grid,
-  CardActionArea,
   Breadcrumbs,
   Link,
   Paper,
