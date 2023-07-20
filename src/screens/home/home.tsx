@@ -1,51 +1,11 @@
-import {
-  Grid,
-  Button,
-  Typography,
-  Paper,
-  Card,
-  CardContent,
-  CardActions,
-  Theme,
-} from "@mui/material";
-import { PlayArrow as PlayIcon } from "@mui/icons-material";
-import { makeStyles } from "@mui/styles";
+import { Grid, Typography, Paper, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 import { routes } from "../../navigation";
-import clsx from "clsx";
-import { useEffect, useState } from "react";
-import { readGameCollection } from "../../service/firebase";
-
-const useStyles = makeStyles((theme: Theme) => ({
-  cardList: {
-    marginTop: theme.spacing(2),
-  },
-  card: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    height: "100%",
-  },
-  text: {
-    textAlign: "left",
-  },
-  title: { fontSize: 14 },
-}));
+import HomeBanner from "../../assets/images/home-banner.png";
 
 export const HomeScreen = () => {
-  const classes = useStyles();
-  const [games, setGames] = useState<Array<GameType>>([]);
-
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const loadGames = async () => {
-      const res = await readGameCollection();
-      setGames(res);
-    };
-    loadGames();
-  }, []);
 
   return (
     <Grid item xs={12} md={8} lg={9}>
@@ -56,46 +16,35 @@ export const HomeScreen = () => {
           flexDirection: "column",
         }}
       >
-        <Typography variant="h2" component="h4">
-          Home
+        <img src={HomeBanner} alt={"home-banner"} loading="lazy" />
+        <br />
+        <Typography>
+          A flashcard or flash card (also known as an index card) is a card
+          bearing information on both sides, which is intended to be used as an
+          aid in memorization. Each flashcard bears a question on one side and
+          an answer on the other. Flashcards are often used to memorize
+          vocabulary, historical dates, formulae or any subject matter that can
+          be learned via a question-and-answer format. Flashcards can be virtual
+          (part of a flashcard software), or physical.
         </Typography>
-        <Grid container spacing={3} className={classes.cardList}>
-          {games.map((g) => (
-            <Grid item xs={12} lg={4} key={g.id}>
-              <Card className={classes.card}>
-                <CardContent>
-                  <Typography
-                    color="text.secondary"
-                    className={clsx(classes.title, classes.text)}
-                    gutterBottom
-                  >
-                    {g.title}
-                  </Typography>
-                  <Typography
-                    variant="h5"
-                    component="div"
-                    className={classes.text}
-                  >
-                    {g.desc}
-                  </Typography>
-                  <Typography variant="body2"></Typography>
-                </CardContent>
-                <CardActions>
-                  <Button
-                    onClick={() => {
-                      navigate(
-                        `/${routes.games.path}/${routes.player.path}/${g.id}`
-                      );
-                    }}
-                  >
-                    Play
-                    <PlayIcon />
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
+        <br />
+        <Typography>
+          Flashcards are an application of the testing effect - the finding that
+          long-term memory is increased when some of the learning period is
+          devoted to retrieving the information through testing with proper
+          feedback. Study habits affect the rate at which a flashcard-user
+          learns, and proper spacing of flashcards has been proven to accelerate
+          learning. A number of spaced repetition software programs exist which
+          take advantage of this principle.
+        </Typography>
+        <br />
+        <Button
+          onClick={() => {
+            navigate(`/${routes.games.path}`);
+          }}
+        >
+          Start playing
+        </Button>
       </Paper>
     </Grid>
   );
