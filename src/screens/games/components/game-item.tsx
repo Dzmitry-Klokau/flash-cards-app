@@ -40,15 +40,9 @@ export const GameItem = ({ data }: Props) => {
     <Grid item xs={12} lg={4} key={data.id}>
       <Card className={classes.card}>
         <CardContent>
-          <Typography
-            color="text.secondary"
-            className={classes.text}
-            gutterBottom
-            variant="h3"
-          >
+          <Typography className={classes.text} gutterBottom variant="h4">
             {data.title}
           </Typography>
-          <Typography variant="body2"></Typography>
         </CardContent>
         <CardActions>
           <Button

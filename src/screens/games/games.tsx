@@ -49,6 +49,7 @@ export const GamesScreen = () => {
               color="inherit"
               onClick={() => {
                 setSelectedGroup(undefined);
+                setSelectedCategory(undefined);
               }}
             >
               Groups

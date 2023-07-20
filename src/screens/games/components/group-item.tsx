@@ -10,8 +10,8 @@ export const GroupItem = ({ data, onClick }: Props) => (
     <Card variant="outlined">
       <CardActionArea onClick={onClick}>
         <Typography
-          variant="h1"
-          component="h2"
+          variant="h2"
+          component="h3"
           sx={{ textAlign: "center", mt: 2 }}
         >
           {data.title}
