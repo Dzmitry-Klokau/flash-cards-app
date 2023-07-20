@@ -1,16 +1,11 @@
-import {
-  Typography,
-  Grid,
-  Breadcrumbs,
-  Link,
-  Paper,
-  Theme,
-} from "@mui/material";
+import { useEffect, useState } from "react";
+import { Grid, Paper, Theme, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
 import { readGroupCollection } from "../../service/firebase";
-import { useEffect, useState } from "react";
-import { CategoryItem, GameItem, GroupItem } from "./components";
+import { Breadcrumbs, CategoryItem, GameItem, GroupItem } from "./components";
+import { useSearchParams } from "react-router-dom";
+import { isEmpty, isNull } from "lodash";
 
 const useStyles = makeStyles((theme: Theme) => ({
   cardList: {
@@ -20,17 +15,48 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export const GamesScreen = () => {
   const classes = useStyles();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const [data, setData] = useState<GroupType[]>([]);
-  const [selectedGroup, setSelectedGroup] = useState<GroupType>();
-  const [selectedCategory, setSelectedCategory] = useState<GroupCategoryNode>();
+
+  const [selectedGroup, setSelectedGroup] = useState<GroupType | undefined>();
+  const [selectedCategory, setSelectedCategory] = useState<
+    GroupCategoryNode | undefined
+  >();
+
+  useEffect(() => {
+    if (data) {
+      let params: any = {};
+      if (selectedGroup) {
+        params.group = `${selectedGroup?.id}`;
+      }
+      if (selectedCategory) {
+        params.category = `${selectedCategory?.name}`;
+      }
+      setSearchParams(params);
+    }
+  }, [setSearchParams, data, selectedCategory, selectedGroup]);
 
   useEffect(() => {
     const loadGroups = async () => {
       const res = await readGroupCollection();
+      if (!isNull(searchParams.get("group"))) {
+        const group = res.find((g) => g.id === searchParams.get("group"));
+        setSelectedGroup(group);
+
+        if (group && !isNull(searchParams.get("category"))) {
+          setSelectedCategory(
+            group.categories.find(
+              (c) => c.name === searchParams.get("category")
+            )
+          );
+        }
+      }
+
       setData(res);
     };
     loadGroups();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -42,75 +68,98 @@ export const GamesScreen = () => {
           flexDirection: "column",
         }}
       >
-        <Breadcrumbs aria-label="breadcrumb">
-          {selectedGroup ? (
-            <Link
-              underline="hover"
-              color="inherit"
-              onClick={() => {
-                setSelectedGroup(undefined);
-                setSelectedCategory(undefined);
-              }}
-            >
-              Groups
-            </Link>
-          ) : (
-            <Typography color="text.primary">Groups</Typography>
-          )}
-          {selectedGroup && selectedCategory && (
-            <Link
-              underline="hover"
-              color="inherit"
-              onClick={() => {
-                setSelectedCategory(undefined);
-              }}
-            >
-              {selectedGroup.title}
-            </Link>
-          )}
-          {selectedGroup && !selectedCategory && (
-            <Typography color="text.primary">{selectedGroup.title}</Typography>
-          )}
-          {selectedCategory && (
-            <Typography color="text.primary">
-              {selectedCategory.name}
-            </Typography>
-          )}
-        </Breadcrumbs>
+        <Breadcrumbs
+          level1Label={"All"}
+          level1OnPress={() => {
+            setSelectedCategory(undefined);
+            setSelectedGroup(undefined);
+          }}
+          level2Label={selectedGroup?.title}
+          level2OnPress={() => {
+            setSelectedCategory(undefined);
+          }}
+          level3Label={selectedCategory?.name}
+        />
         <Grid container spacing={3} className={classes.cardList}>
-          {!selectedGroup && (
-            <>
-              {data.map((item) => (
-                <GroupItem
-                  data={item}
-                  onClick={() => {
-                    setSelectedGroup(item);
-                  }}
-                />
-              ))}
-            </>
-          )}
-          {selectedGroup && !selectedCategory && (
-            <>
-              {selectedGroup.categories.map((c) => (
-                <CategoryItem
-                  data={c}
-                  onClick={() => {
-                    setSelectedCategory(c);
-                  }}
-                />
-              ))}
-            </>
-          )}
-          {selectedCategory && (
-            <>
-              {selectedCategory.games.map((g) => (
-                <GameItem data={g} />
-              ))}
-            </>
-          )}
+          <Content
+            groups={data}
+            group={selectedGroup}
+            onSelectGroup={(v) => setSelectedGroup(v)}
+            category={selectedCategory}
+            onSelectCategory={(v) => setSelectedCategory(v)}
+          />
         </Grid>
       </Paper>
     </Grid>
   );
 };
+
+type ContentProps = {
+  category: GroupCategoryNode | undefined;
+  onSelectCategory: (value: GroupCategoryNode) => void;
+  group: GroupType | undefined;
+  onSelectGroup: (value: GroupType) => void;
+  groups: GroupType[];
+};
+
+const Content = ({
+  category,
+  onSelectCategory,
+  group,
+  onSelectGroup,
+  groups,
+}: ContentProps) => {
+  if (category) {
+    if (isEmpty(category.games)) {
+      return <EmptyState />;
+    }
+
+    return (
+      <>
+        {category.games.map((g) => (
+          <GameItem key={g.id} data={g} />
+        ))}
+      </>
+    );
+  }
+
+  if (group) {
+    if (isEmpty(group.categories)) {
+      return <EmptyState />;
+    }
+
+    return (
+      <>
+        {group.categories.map((c) => (
+          <CategoryItem
+            key={c.name}
+            data={c}
+            onClick={() => {
+              onSelectCategory(c);
+            }}
+          />
+        ))}
+      </>
+    );
+  }
+
+  return (
+    <>
+      {groups.map((item) => (
+        <GroupItem
+          key={item.id}
+          data={item}
+          onClick={() => {
+            onSelectGroup(item);
+          }}
+        />
+      ))}
+    </>
+  );
+};
+
+const EmptyState = () => (
+  <Grid item xs={12} sx={{ alignContent: "center" }}>
+    <Typography>No items</Typography>
+  </Grid>
+);
