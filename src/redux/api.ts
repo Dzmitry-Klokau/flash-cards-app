@@ -19,7 +19,7 @@ const USE_MOCKS = false; // process.env.NODE_ENV === "development";
 export const api = createApi({
   baseQuery: fakeBaseQuery(),
   tagTypes: ["GroupCollection", "GameCollection"],
-  keepUnusedDataFor: 30,
+  keepUnusedDataFor: 60 * 15, // 15 min
   endpoints: (builder) => ({
     groupCollection: builder.query<GroupType[], void>({
       async queryFn() {
