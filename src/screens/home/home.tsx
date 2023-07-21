@@ -16,7 +16,7 @@ export const HomeScreen = () => {
           flexDirection: "column",
         }}
       >
-        <img src={HomeBanner} alt={"home-banner"} loading="lazy" />
+        <img src={HomeBanner} alt={"home-banner"} />
         <br />
         <Typography>
           A flashcard or flash card (also known as an index card) is a card
