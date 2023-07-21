@@ -13,8 +13,8 @@ import { useParams } from "react-router-dom";
 import { isUndefined } from "lodash";
 import { makeStyles } from "@mui/styles";
 
-import { readGameById } from "../../service/firebase";
 import { Header, Item } from "./components";
+import { useLazyGameByIdQuery } from "../../redux";
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -26,21 +26,18 @@ export const PlayerScreen = () => {
   const classes = useStyles();
 
   const params = useParams();
-  const [data, setData] = useState<GameType>();
+  const [fetchGameById, { data }] = useLazyGameByIdQuery();
+
   const [activeStep, setActiveStep] = useState(0);
 
   const [dialogVisible, setDialogVisible] = useState<boolean>(false);
   const [random, setRandom] = useState<boolean>(false);
 
   useEffect(() => {
-    const loadData = async (id: string) => {
-      const res = await readGameById(id);
-      setData(res);
-    };
     if (params.id) {
-      loadData(params.id);
+      fetchGameById(params.id);
     }
-  }, [params.id]);
+  }, [params.id, fetchGameById]);
 
   const handleNext = useCallback(() => {
     if (random) {

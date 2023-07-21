@@ -9,6 +9,7 @@
 - [Control Access with Custom Claims and Security Rules](https://firebase.google.com/docs/auth/admin/custom-claims)
 - [sdc](https://dev.to/alvardev/firebase-firestore-rules-with-custom-claims-an-easy-way-523d)
 - [Firebase Auth Tutorial #17 - Intro to Custom Claims](https://www.youtube.com/watch?v=SSiLsIkPQWs)
+- [Firebase + reduxjs/toolkit](https://blog.bitsrc.io/how-to-use-firestore-with-redux-in-a-react-application-f127d35adf3e)
 
 ### Firebase configuration
 

@@ -7,7 +7,7 @@ export const CategoryItem = ({ data, onClick }: Props) => (
     <Grid item md={6} xs={12} sx={{ alignContent: "center" }}>
       <Card variant="outlined">
         <CardActionArea onClick={onClick}>
-          <Typography variant="h2" sx={{ textAlign: "center", mt: 2 }}>
+          <Typography variant="h3" sx={{ textAlign: "center", mt: 2 }}>
             {data.name}
           </Typography>
           <Typography sx={{ textAlign: "center", mb: 2 }}>

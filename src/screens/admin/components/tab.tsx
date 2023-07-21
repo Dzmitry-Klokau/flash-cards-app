@@ -13,7 +13,7 @@ import { Add as AddIcon } from "@mui/icons-material";
 
 type Props = {
   visible: boolean;
-  data: Array<GameType | GroupType>;
+  data: Array<GameType | GroupType> | undefined;
   onAddPress: VoidFunction;
   onRowPress: (id: string) => void;
 };
@@ -36,7 +36,7 @@ export const Tab = ({ data, visible, onAddPress, onRowPress }: Props) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((row) => (
+            {data?.map((row) => (
               <TableRow
                 key={row.id}
                 role="button"

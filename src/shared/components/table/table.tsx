@@ -89,7 +89,6 @@ const Body = ({
 
   const uuidS = useMemo(() => {
     const tableValues = get(values, tableName);
-    console.log({ tableValues, values, tableName });
 
     return get(values, tableName)?.map((v: { uuid: string }) => v.uuid);
   }, [values, tableName]);

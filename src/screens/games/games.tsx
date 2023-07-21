@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { Grid, Paper, Theme, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
-import { readGroupCollection } from "../../service/firebase";
 import { Breadcrumbs, CategoryItem, GameItem, GroupItem } from "./components";
 import { useSearchParams } from "react-router-dom";
 import { isEmpty, isNull } from "lodash";
+import { useGroupCollectionQuery } from "../../redux";
 
 const useStyles = makeStyles((theme: Theme) => ({
   cardList: {
@@ -17,7 +17,7 @@ export const GamesScreen = () => {
   const classes = useStyles();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const [data, setData] = useState<GroupType[]>([]);
+  const { data, isLoading } = useGroupCollectionQuery();
 
   const [selectedGroup, setSelectedGroup] = useState<GroupType | undefined>();
   const [selectedCategory, setSelectedCategory] = useState<
@@ -38,26 +38,21 @@ export const GamesScreen = () => {
   }, [setSearchParams, data, selectedCategory, selectedGroup]);
 
   useEffect(() => {
-    const loadGroups = async () => {
-      const res = await readGroupCollection();
-      if (!isNull(searchParams.get("group"))) {
-        const group = res.find((g) => g.id === searchParams.get("group"));
-        setSelectedGroup(group);
+    if (data && !isNull(searchParams.get("group"))) {
+      const group = data.find((g) => g.id === searchParams.get("group"));
+      setSelectedGroup(group);
 
-        if (group && !isNull(searchParams.get("category"))) {
-          setSelectedCategory(
-            group.categories.find(
-              (c) => c.name === searchParams.get("category")
-            )
-          );
-        }
+      if (group && !isNull(searchParams.get("category"))) {
+        setSelectedCategory(
+          group.categories.find((c) => c.name === searchParams.get("category"))
+        );
       }
+    }
+  }, [data, searchParams]);
 
-      setData(res);
-    };
-    loadGroups();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  if (isLoading) {
+    return null;
+  }
 
   return (
     <Grid item xs={12} md={8} lg={9}>
@@ -99,7 +94,7 @@ type ContentProps = {
   onSelectCategory: (value: GroupCategoryNode) => void;
   group: GroupType | undefined;
   onSelectGroup: (value: GroupType) => void;
-  groups: GroupType[];
+  groups?: GroupType[];
 };
 
 const Content = ({
@@ -145,7 +140,7 @@ const Content = ({
 
   return (
     <>
-      {groups.map((item) => (
+      {groups?.map((item) => (
         <GroupItem
           key={item.id}
           data={item}

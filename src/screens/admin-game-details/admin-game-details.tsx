@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 
 import { Grid, Paper, TextField, Theme } from "@mui/material";
 import { isUndefined } from "lodash";
@@ -6,11 +6,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Formik } from "formik";
 import { v4 as uuidv4 } from "uuid";
 
-import { readGameById, writeGame } from "../../service/firebase";
 import { object, string, array } from "yup";
 import { Info } from "./components";
 import { FormikSubmitBtn, Table } from "../../shared/components";
 import { makeStyles } from "@mui/styles";
+import {
+  useLazyGameByIdQuery,
+  useUpdateGameCollectionMutation,
+} from "../../redux";
 
 const emptyGame: GameType = {
   id: "",
@@ -42,33 +45,29 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export const AdminGameDetails = () => {
   const navigate = useNavigate();
-  const [data, setData] = useState<GameType>();
   const params = useParams();
   const classes = useStyles();
 
+  const [fetchGameById, { data }] = useLazyGameByIdQuery();
+  const [update] = useUpdateGameCollectionMutation();
+
   useEffect(() => {
-    const loadData = async (id: string) => {
-      const res = await readGameById(id);
-      setData(res);
-    };
     if (params.id) {
       // esiting game
-      loadData(params.id);
-    } else {
-      // new game
-      setData(emptyGame);
+      fetchGameById(params.id);
     }
-  }, [params.id]);
+  }, [params.id, fetchGameById]);
 
   const handleSubmit = async (data: GameType) => {
-    const res = await writeGame(data);
-    if (res?.id) {
-      navigate(res.id, {
-        relative: "path",
-      });
-    } else {
-      navigate(-1);
-    }
+    // const res = await update(data);
+    update({ gameId: data.id, newGame: data });
+    // if (res?.id) {
+    //   navigate(res.id, {
+    //     relative: "path",
+    //   });
+    // } else {
+    navigate(-1);
+    // }
   };
 
   const renderCell: RenderCellFunc = useCallback(
@@ -101,7 +100,8 @@ export const AdminGameDetails = () => {
         }}
       >
         <Formik
-          initialValues={data}
+          initialValues={data || emptyGame}
+          enableReinitialize
           validationSchema={validationSchema}
           validateOnBlur={true}
           validateOnChange={false}

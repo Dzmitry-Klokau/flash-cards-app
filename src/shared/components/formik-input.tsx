@@ -2,7 +2,6 @@ import { Component } from "react";
 import { TextField } from "@mui/material";
 import { connect } from "formik";
 
-
 type Props = {
   className: string;
   title: string;
@@ -25,7 +24,6 @@ class Input extends Component<Props & FormikProp> {
       rest.disabled !== nextRest.disabled ||
       rest.title !== nextRest.title
     ) {
-      console.log("render " + fieldName);
       return true;
     }
     return false;

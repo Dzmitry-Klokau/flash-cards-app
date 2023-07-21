@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 
 import {
   Autocomplete,
@@ -13,16 +13,16 @@ import { isUndefined } from "lodash";
 import { useNavigate, useParams } from "react-router-dom";
 import { Formik } from "formik";
 import { v4 as uuidv4 } from "uuid";
-
-import {
-  readAllGameIds,
-  readGroupById,
-  writeGroup,
-} from "../../service/firebase";
 import { array, object, string } from "yup";
+import { makeStyles } from "@mui/styles";
+
 import { Info } from "./components";
 import { FormikSubmitBtn, Table } from "../../shared/components";
-import { makeStyles } from "@mui/styles";
+import {
+  useGameIdsQuery,
+  useLazyGroupByIdQuery,
+  useUpdateGroupCollectionMutation,
+} from "../../redux";
 
 const emptyGroup: GroupType = {
   id: "",
@@ -53,41 +53,29 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export const AdminGroupDetails = () => {
   const navigate = useNavigate();
-  const [data, setData] = useState<GroupType>();
-  const [gameData, setGameData] = useState<Array<GameIdsType>>();
   const params = useParams();
   const classes = useStyles();
 
-  useEffect(() => {
-    const loadGamesData = async () => {
-      const resGames = await readAllGameIds();
-      setGameData(resGames);
-    };
+  const [fetchGroupById, { data }] = useLazyGroupByIdQuery();
+  const { data: gameData } = useGameIdsQuery();
+  const [update] = useUpdateGroupCollectionMutation();
 
-    const loadData = async (id: string) => {
-      await loadGamesData();
-      const res = await readGroupById(id);
-      setData(res);
-    };
+  useEffect(() => {
     if (params.id) {
       // esiting group
-      loadData(params.id);
-    } else {
-      // new game
-      loadGamesData();
-      setData(emptyGroup);
+      fetchGroupById(params.id);
     }
-  }, [params.id]);
+  }, [params.id, fetchGroupById]);
 
   const handleSubmit = async (data: GroupType) => {
-    const res = await writeGroup(data);
-    if (res?.id) {
-      navigate(res.id, {
-        relative: "path",
-      });
-    } else {
-      navigate(-1);
-    }
+    update({ groupId: data.id, newGroup: data });
+    // if (res?.id) {
+    //   navigate(res.id, {
+    //     relative: "path",
+    //   });
+    // } else {
+    navigate(-1);
+    // }
   };
 
   const renderCell: RenderCellFunc = useCallback(
@@ -149,7 +137,7 @@ export const AdminGroupDetails = () => {
             })
           }
           renderOption={(props, option) => {
-            const selected = row.games.find(
+            const selected = row.games?.find(
               (e: GameIdsType) => e.id === option.id
             );
             if (selected) {
@@ -171,7 +159,7 @@ export const AdminGroupDetails = () => {
     [gameData]
   );
 
-  if (isUndefined(data)) {
+  if (isUndefined(emptyGroup)) {
     return null;
   }
 
@@ -185,7 +173,8 @@ export const AdminGroupDetails = () => {
         }}
       >
         <Formik
-          initialValues={data}
+          initialValues={data || emptyGroup}
+          enableReinitialize
           validationSchema={validationSchema}
           validateOnBlur={true}
           validateOnChange={false}
