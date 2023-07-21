@@ -5,7 +5,7 @@ import { isNull } from "lodash";
 
 import { Tab as AdminTab } from "./components";
 import { routes } from "../../navigation";
-import { useGroupCollectionQuery, useGameCollectionQuery } from "../../redux";
+import { useGroupCollectionQuery, useGameCollectionQuery } from "../../api";
 
 export const AdminScreen = () => {
   const navigate = useNavigate();

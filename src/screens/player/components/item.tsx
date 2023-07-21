@@ -7,10 +7,12 @@ import {
   Box,
   styled,
 } from "@mui/material";
+import { useSelector } from "react-redux";
 
 import { makeStyles } from "@mui/styles";
 import clsx from "clsx";
 import { shouldForwardProp } from "../../../shared/utils";
+import { RootState } from "../../../redux";
 
 const useStyles = makeStyles((theme: Theme) => ({
   centered: {
@@ -33,19 +35,18 @@ type AnswerState = "visible" | "hidden" | "closed" | undefined;
 
 type CardProps = {
   answerState: AnswerState;
+  animationDuration: number;
 };
-
-const ANIMATION_DURATION = 1000;
 
 const WrappedCard = styled(Card, {
   shouldForwardProp: (prop) =>
-    shouldForwardProp<CardProps>(["answerState"], prop),
-})<CardProps>(({ theme, answerState }) => ({
+    shouldForwardProp<CardProps>(["answerState", "animationDuration"], prop),
+})<CardProps>(({ theme, answerState, animationDuration }) => ({
   margin: theme.spacing(2),
   width: "100%",
   transition: theme.transitions.create("all", {
     easing: theme.transitions.easing.easeInOut,
-    duration: ANIMATION_DURATION,
+    duration: animationDuration,
   }),
   ...(answerState === undefined && {
     [theme.breakpoints.down("md")]: {
@@ -70,13 +71,17 @@ const WrappedCard = styled(Card, {
 
 type ContentProps = {
   visible: boolean;
+  animationDuration: number;
   rotate?: boolean;
 };
 
 const WrappedContent = styled(Box, {
   shouldForwardProp: (prop) =>
-    shouldForwardProp<ContentProps>(["visible", "rotate"], prop),
-})<ContentProps>(({ theme, visible, rotate }) => ({
+    shouldForwardProp<ContentProps>(
+      ["visible", "rotate", "animationDuration"],
+      prop
+    ),
+})<ContentProps>(({ theme, visible, rotate, animationDuration }) => ({
   height: 0,
   opacity: 0,
   ...(visible && {
@@ -84,7 +89,7 @@ const WrappedContent = styled(Box, {
     transform: rotate ? "rotateY(180deg)" : undefined,
     transition: theme.transitions.create("opacity", {
       easing: theme.transitions.easing.sharp,
-      delay: ANIMATION_DURATION,
+      delay: animationDuration,
     }),
     opacity: 1,
   }),
@@ -96,6 +101,8 @@ export const Item = ({ item, className, onNext }: Props) => {
   const classes = useStyles();
   const [answerState, setAnswerState] = useState<AnswerState>();
 
+  const animation = useSelector((state: RootState) => state.player.animation);
+
   useEffect(() => {
     setTimeout(() => {
       setAnswerState("hidden");
@@ -106,13 +113,17 @@ export const Item = ({ item, className, onNext }: Props) => {
     if (answerState === "closed") {
       setTimeout(() => {
         onNext();
-      }, ANIMATION_DURATION);
+      }, animation);
     }
-  }, [answerState, onNext]);
+  }, [answerState, animation, onNext]);
 
   return (
     <Box className={clsx(classes.centered, className)}>
-      <WrappedCard variant="outlined" answerState={answerState}>
+      <WrappedCard
+        variant="outlined"
+        answerState={answerState}
+        animationDuration={animation}
+      >
         <CardActionArea
           onClick={() => {
             if (answerState === "visible") {
@@ -123,7 +134,11 @@ export const Item = ({ item, className, onNext }: Props) => {
           }}
           className={classes.cardContent}
         >
-          <WrappedContent visible={answerState === "visible"} rotate>
+          <WrappedContent
+            visible={answerState === "visible"}
+            rotate
+            animationDuration={animation}
+          >
             <Typography variant="h5" className={classes.text}>
               {item.secondary}
             </Typography>
@@ -131,7 +146,10 @@ export const Item = ({ item, className, onNext }: Props) => {
               [ {item.optional} ]
             </Typography>
           </WrappedContent>
-          <WrappedContent visible={answerState === "hidden"}>
+          <WrappedContent
+            visible={answerState === "hidden"}
+            animationDuration={animation}
+          >
             <Typography variant="h5" className={classes.text}>
               {item.primary}
             </Typography>

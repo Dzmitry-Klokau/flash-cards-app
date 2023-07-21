@@ -1,19 +1,18 @@
 import { useCallback, useEffect } from "react";
-
 import { Grid, Paper, TextField, Theme } from "@mui/material";
 import { isUndefined } from "lodash";
 import { useNavigate, useParams } from "react-router-dom";
 import { Formik } from "formik";
 import { v4 as uuidv4 } from "uuid";
-
+import { makeStyles } from "@mui/styles";
 import { object, string, array } from "yup";
+
 import { Info } from "./components";
 import { FormikSubmitBtn, Table } from "../../shared/components";
-import { makeStyles } from "@mui/styles";
 import {
   useLazyGameByIdQuery,
   useUpdateGameCollectionMutation,
-} from "../../redux";
+} from "../../api";
 
 const emptyGame: GameType = {
   id: "",

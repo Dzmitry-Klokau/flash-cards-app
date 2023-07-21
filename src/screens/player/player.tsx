@@ -1,20 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
-import {
-  Grid,
-  Checkbox,
-  Theme,
-  DialogTitle,
-  Dialog,
-  IconButton,
-  Typography,
-  DialogContent,
-} from "@mui/material";
+import { Grid, Theme } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { isUndefined } from "lodash";
 import { makeStyles } from "@mui/styles";
+import { useSelector } from "react-redux";
 
-import { Header, Item } from "./components";
-import { useLazyGameByIdQuery } from "../../redux";
+import { RootState } from "../../redux";
+import { Header, Item, SettingsModal } from "./components";
+import { useLazyGameByIdQuery } from "../../api";
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -31,7 +24,8 @@ export const PlayerScreen = () => {
   const [activeStep, setActiveStep] = useState(0);
 
   const [dialogVisible, setDialogVisible] = useState<boolean>(false);
-  const [random, setRandom] = useState<boolean>(false);
+
+  const random = useSelector((state: RootState) => state.player.random);
 
   useEffect(() => {
     if (params.id) {
@@ -65,20 +59,10 @@ export const PlayerScreen = () => {
         item={data.cards[activeStep]}
         onNext={handleNext}
       />
-      <Dialog
+      <SettingsModal
+        visible={dialogVisible}
         onClose={() => setDialogVisible((prev) => !prev)}
-        open={dialogVisible}
-      >
-        <DialogTitle>Settings</DialogTitle>
-        <DialogContent>
-          <Typography>
-            Random
-            <IconButton onClick={() => setRandom((prev) => !prev)}>
-              <Checkbox disabled checked={random} />
-            </IconButton>
-          </Typography>
-        </DialogContent>
-      </Dialog>
+      />
     </Grid>
   );
 };

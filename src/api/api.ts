@@ -14,7 +14,7 @@ import { mockGroupList } from "../mocks";
 import { db } from "../service/firebase";
 import { mockGameList, mockGameNameList } from "../mocks/mock-games";
 
-const USE_MOCKS = false; // process.env.NODE_ENV === "development";
+const USE_MOCKS = process.env.NODE_ENV === "development";
 
 export const api = createApi({
   baseQuery: fakeBaseQuery(),

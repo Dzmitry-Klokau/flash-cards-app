@@ -5,7 +5,7 @@ import { makeStyles } from "@mui/styles";
 import { Breadcrumbs, CategoryItem, GameItem, GroupItem } from "./components";
 import { useSearchParams } from "react-router-dom";
 import { isEmpty, isNull } from "lodash";
-import { useGroupCollectionQuery } from "../../redux";
+import { useGroupCollectionQuery } from "../../api";
 
 const useStyles = makeStyles((theme: Theme) => ({
   cardList: {

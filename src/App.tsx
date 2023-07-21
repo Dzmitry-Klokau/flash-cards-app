@@ -1,19 +1,22 @@
 import "./App.css";
 import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 
 import { Navigation } from "./navigation";
 import { ColorModeContextProvider } from "./shared/context";
 import { StyledThemeProvider } from "./styles";
-import { store } from "./redux/store";
+import { store, persistor } from "./redux/store";
 
 function App() {
   return (
     <Provider store={store}>
-      <ColorModeContextProvider>
-        <StyledThemeProvider>
-          <Navigation />
-        </StyledThemeProvider>
-      </ColorModeContextProvider>
+      <PersistGate loading={null} persistor={persistor}>
+        <ColorModeContextProvider>
+          <StyledThemeProvider>
+            <Navigation />
+          </StyledThemeProvider>
+        </ColorModeContextProvider>
+      </PersistGate>
     </Provider>
   );
 }

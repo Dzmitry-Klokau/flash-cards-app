@@ -22,7 +22,7 @@ import {
   useGameIdsQuery,
   useLazyGroupByIdQuery,
   useUpdateGroupCollectionMutation,
-} from "../../redux";
+} from "../../api";
 
 const emptyGroup: GroupType = {
   id: "",
