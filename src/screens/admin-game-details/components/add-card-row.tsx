@@ -1,6 +1,6 @@
 import { TableCell, TableRow, IconButton } from "@mui/material";
 import { Add as AddIcon } from "@mui/icons-material";
-import { FormikProps, FormikValues, connect } from "formik";
+import { connect } from "formik";
 import { withStyles, WithStyles } from "@mui/styles";
 import { v4 as uuidv4 } from "uuid";
 import { Component } from "react";
@@ -20,11 +20,9 @@ const emptyCard = (): CardType => ({
   uuid: uuidv4(),
 });
 
-type Props = {
-  formik: FormikProps<FormikValues>;
-} & WithStyles<typeof styles>;
+type Props = Partial<WithStyles<typeof styles>>;
 
-class Row extends Component<Props> {
+class Row extends Component<Props & FormikProp> {
   render() {
     const { classes, formik } = this.props;
 
@@ -32,7 +30,7 @@ class Row extends Component<Props> {
       <TableRow>
         <TableCell colSpan={4}>
           <IconButton
-            className={classes.button}
+            className={classes?.button}
             onClick={() => {
               formik.setFieldValue("cards", [
                 ...formik.values.cards,
@@ -48,4 +46,5 @@ class Row extends Component<Props> {
   }
 }
 
-export const AddCardRow = withStyles(styles)(connect(Row));
+// @ts-ignore
+export const AddCardRow: React.FC<Props> = withStyles(styles)(connect(Row));

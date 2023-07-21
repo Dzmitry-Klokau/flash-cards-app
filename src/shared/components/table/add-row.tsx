@@ -1,8 +1,8 @@
 import { TableCell, TableRow, IconButton } from "@mui/material";
 import { Add as AddIcon } from "@mui/icons-material";
-import { FormikProps, FormikValues, connect } from "formik";
+import { connect } from "formik";
 import { withStyles, WithStyles } from "@mui/styles";
-import { Component } from "react";
+import React, { Component } from "react";
 
 const styles = () => ({
   button: {
@@ -15,10 +15,9 @@ const styles = () => ({
 type Props = {
   tableName: string;
   createNewItem: () => any;
-  formik: FormikProps<FormikValues>;
-} & WithStyles<typeof styles>;
+} & Partial<WithStyles<typeof styles>>;
 
-class Row extends Component<Props> {
+class Row extends Component<Props & FormikProp> {
   render() {
     const { classes, formik, tableName, createNewItem } = this.props;
 
@@ -26,7 +25,7 @@ class Row extends Component<Props> {
       <TableRow>
         <TableCell colSpan={4}>
           <IconButton
-            className={classes.button}
+            className={classes?.button}
             onClick={() => {
               const newValue = [...formik.values[tableName], createNewItem()];
               console.log({ newValue, tableName });
@@ -41,4 +40,5 @@ class Row extends Component<Props> {
   }
 }
 
-export const AddRow = withStyles(styles)(connect(Row));
+// @ts-ignore
+export const AddRow: React.FC<Props> = withStyles(styles)(connect<Props>(Row));

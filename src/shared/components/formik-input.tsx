@@ -1,17 +1,17 @@
 import { Component } from "react";
 import { TextField } from "@mui/material";
-import { connect, FormikValues, FormikProps } from "formik";
+import { connect } from "formik";
+
 
 type Props = {
   className: string;
-  formik: FormikProps<FormikValues>;
   title: string;
   fieldName: string;
-  disabled: boolean;
+  disabled?: boolean;
 };
 
-class Input extends Component<Props> {
-  shouldComponentUpdate(nextProps: Readonly<Props>): boolean {
+class Input extends Component<Props & FormikProp> {
+  shouldComponentUpdate(nextProps: Readonly<Props & FormikProp>): boolean {
     const { fieldName, formik, ...rest } = this.props;
     const {
       fieldName: nextFieldName,
@@ -54,5 +54,5 @@ class Input extends Component<Props> {
     );
   }
 }
-
-export const FormikInput = connect<Props>(Input);
+// @ts-ignore
+export const FormikInput: React.FC<Props> = connect<Props>(Input);

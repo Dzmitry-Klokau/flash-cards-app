@@ -1,15 +1,14 @@
 import { Component } from "react";
 import { Button } from "@mui/material";
-import { connect, FormikValues, FormikProps } from "formik";
+import { connect } from "formik";
 
 type Props = {
   className?: string;
-  formik: FormikProps<FormikValues>;
   title: string;
 };
 
-class Btn extends Component<Props> {
-  shouldComponentUpdate(nextProps: Readonly<Props>): boolean {
+class Btn extends Component<Props & FormikProp> {
+  shouldComponentUpdate(nextProps: Readonly<Props & FormikProp>): boolean {
     const { formik, ...rest } = this.props;
     const { formik: nextFormik, ...nextRest } = nextProps;
 
@@ -48,4 +47,5 @@ class Btn extends Component<Props> {
   }
 }
 
-export const FormikSubmitBtn = connect<Props>(Btn);
+// @ts-ignore
+export const FormikSubmitBtn: React.FC<Props> = connect<Props>(Btn);

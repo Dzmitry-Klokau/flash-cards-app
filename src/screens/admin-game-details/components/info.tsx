@@ -16,14 +16,14 @@ export const Info = () => {
     <>
       <FormikInput
         className={classes.field}
-        label="ID"
+        title="ID"
         fieldName="id"
         disabled
       />
-      <FormikInput className={classes.field} label="Title" fieldName="title" />
+      <FormikInput className={classes.field} title="Title" fieldName="title" />
       <FormikInput
         className={classes.field}
-        label="Description"
+        title="Description"
         fieldName="desc"
       />
     </>

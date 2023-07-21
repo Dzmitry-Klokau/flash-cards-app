@@ -4,11 +4,10 @@ import {
   ArrowUpward as ArrowUpwardIcon,
   ArrowDownward as ArrowDownwardIcon,
 } from "@mui/icons-material";
-import { connect, FormikValues, FormikProps } from "formik";
+import { connect } from "formik";
 import { Component } from "react";
 
 type Props = {
-  formik: FormikProps<FormikValues>;
   index: number;
   hasError: boolean;
   onRemove: (index: number) => void;
@@ -30,14 +29,14 @@ const cellInputStyle = {
   minHeight: 50,
 };
 
-class Row extends Component<Props, State> {
-  constructor(props: Props) {
+class Row extends Component<Props & FormikProp, State> {
+  constructor(props: Props & FormikProp) {
     super(props);
     this.state = { highlight: false };
   }
 
   shouldComponentUpdate(
-    nextProps: Readonly<Props>,
+    nextProps: Readonly<Props & FormikProp>,
     nextState: Readonly<State>
   ): boolean {
     const { formik, index } = this.props;
@@ -163,4 +162,5 @@ class Row extends Component<Props, State> {
   }
 }
 
-export const CardRow = connect(Row);
+// @ts-ignore
+export const CardRow: React.FC<Props> = connect(Row);
