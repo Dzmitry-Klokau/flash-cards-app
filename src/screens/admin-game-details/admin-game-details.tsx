@@ -85,10 +85,6 @@ export const AdminGameDetails = () => {
     []
   );
 
-  if (isUndefined(data)) {
-    return null;
-  }
-
   return (
     <Grid item xs={12} md={8} lg={9}>
       <Paper

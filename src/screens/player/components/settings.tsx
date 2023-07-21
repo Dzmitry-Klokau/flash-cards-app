@@ -47,7 +47,7 @@ export const SettingsModal = ({ visible, onClose }: Props) => {
             alignItems: "center",
           }}
         >
-          <Typography>Animation:</Typography>
+          <Typography>Animation (ms):</Typography>
           <IconButton onClick={() => dispatch(decrementAnimation())}>
             <MinusIcon />
           </IconButton>
