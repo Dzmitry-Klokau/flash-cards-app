@@ -88,8 +88,6 @@ const Body = ({
   const highlight = useRef<number>();
 
   const uuidS = useMemo(() => {
-    const tableValues = get(values, tableName);
-
     return get(values, tableName)?.map((v: { uuid: string }) => v.uuid);
   }, [values, tableName]);
 
