@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/flash-cards-app/static/css/main.f30a6d4a.css",
-    "main.js": "/flash-cards-app/static/js/main.59ca41c3.js",
+    "main.js": "/flash-cards-app/static/js/main.74568e4f.js",
     "static/js/787.4566f243.chunk.js": "/flash-cards-app/static/js/787.4566f243.chunk.js",
     "static/media/home-banner.png": "/flash-cards-app/static/media/home-banner.1a46e7a2aeeceb09b88b.png",
     "static/media/roboto-latin-500-normal.woff2": "/flash-cards-app/static/media/roboto-latin-500-normal.f25d774ecfe0996f8eb5.woff2",
@@ -62,11 +62,11 @@
     "static/media/roboto-greek-ext-700-normal.woff": "/flash-cards-app/static/media/roboto-greek-ext-700-normal.249853776d22a271b2b5.woff",
     "index.html": "/flash-cards-app/index.html",
     "main.f30a6d4a.css.map": "/flash-cards-app/static/css/main.f30a6d4a.css.map",
-    "main.59ca41c3.js.map": "/flash-cards-app/static/js/main.59ca41c3.js.map",
+    "main.74568e4f.js.map": "/flash-cards-app/static/js/main.74568e4f.js.map",
     "787.4566f243.chunk.js.map": "/flash-cards-app/static/js/787.4566f243.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.f30a6d4a.css",
-    "static/js/main.59ca41c3.js"
+    "static/js/main.74568e4f.js"
   ]
 }
