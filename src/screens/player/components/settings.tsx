@@ -1,5 +1,4 @@
 import {
-  Checkbox,
   Box,
   DialogTitle,
   Dialog,
@@ -13,6 +12,8 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   AddCircleOutline as PlusIcon,
   RemoveCircleOutline as MinusIcon,
+  CheckBoxOutlineBlank as CheckboxBlank,
+  CheckBoxOutlined as Checkbox,
 } from "@mui/icons-material";
 import { makeStyles } from "@mui/styles";
 
@@ -58,12 +59,13 @@ export const SettingsModal = ({ visible, onClose }: Props) => {
     <Dialog onClose={onClose} open={visible}>
       <DialogTitle>Settings</DialogTitle>
       <DialogContent className={classes.dialogContent}>
-        <Typography>
-          Random:
+        <Box className={classes.row}>
+          <Typography>Random:</Typography>
           <IconButton onClick={() => dispatch(toggleRandom())}>
-            <Checkbox disabled checked={random} />
+            {random ? <Checkbox /> : <CheckboxBlank />}
+            {/* <Checkbox checked={random} /> */}
           </IconButton>
-        </Typography>
+        </Box>
         <Box className={classes.row}>
           <Typography>Animation (ms):</Typography>
           <IconButton onClick={() => dispatch(decrementAnimation())}>
