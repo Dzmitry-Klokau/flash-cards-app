@@ -7,6 +7,7 @@ import {
   Typography,
   DialogContent,
   Theme,
+  Slider,
 } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -34,6 +35,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     flexDirection: "row",
     alignItems: "center",
   },
+  dialogContent: {
+    minWidth: "40vw",
+  },
+  slider: {
+    width: "60%",
+    marginLeft: theme.spacing(2),
+  },
 }));
 
 export const SettingsModal = ({ visible, onClose }: Props) => {
@@ -43,19 +51,13 @@ export const SettingsModal = ({ visible, onClose }: Props) => {
   const animation = useSelector((state: RootState) => state.player.animation);
   const dispatch = useDispatch();
 
-  const {
-    start,
-    incrementStart,
-    decrementStart,
-    end,
-    incrementEnd,
-    decrementEnd,
-  } = useLocalSettingsContext();
+  const { start, updateStart, end, updateEnd, size } =
+    useLocalSettingsContext();
 
   return (
     <Dialog onClose={onClose} open={visible}>
       <DialogTitle>Settings</DialogTitle>
-      <DialogContent>
+      <DialogContent className={classes.dialogContent}>
         <Typography>
           Random:
           <IconButton onClick={() => dispatch(toggleRandom())}>
@@ -73,24 +75,20 @@ export const SettingsModal = ({ visible, onClose }: Props) => {
           </IconButton>
         </Box>
         <Box className={classes.row}>
-          <Typography>Show cards from:</Typography>
-          <IconButton onClick={decrementStart}>
-            <MinusIcon />
-          </IconButton>
-          <Typography>{start}</Typography>
-          <IconButton onClick={incrementStart}>
-            <PlusIcon />
-          </IconButton>
-        </Box>
-        <Box className={classes.row}>
-          <Typography>Show cards to:</Typography>
-          <IconButton onClick={decrementEnd}>
-            <MinusIcon />
-          </IconButton>
-          <Typography>{end}</Typography>
-          <IconButton onClick={incrementEnd}>
-            <PlusIcon />
-          </IconButton>
+          <Typography>From-To:</Typography>
+          <Slider
+            value={[start, end]}
+            max={size}
+            onChange={(_, newValue: number | number[]) => {
+              const newValues = newValue as number[];
+              if (newValues[0] !== newValues[1]) {
+                updateStart(newValues[0]);
+                updateEnd(newValues[1]);
+              }
+            }}
+            valueLabelDisplay="auto"
+            className={classes.slider}
+          />
         </Box>
       </DialogContent>
     </Dialog>
