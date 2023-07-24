@@ -8,6 +8,10 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux";
 import { Header, Item, SettingsModal } from "./components";
 import { useLazyGameByIdQuery } from "../../api";
+import {
+  LocalSettingsContextProvider,
+  useLocalSettingsContext,
+} from "./context";
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -16,16 +20,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export const PlayerScreen = () => {
-  const classes = useStyles();
-
   const params = useParams();
   const [fetchGameById, { data }] = useLazyGameByIdQuery();
-
-  const [activeStep, setActiveStep] = useState(0);
-
-  const [dialogVisible, setDialogVisible] = useState<boolean>(false);
-
-  const random = useSelector((state: RootState) => state.player.random);
 
   useEffect(() => {
     if (params.id) {
@@ -33,29 +29,57 @@ export const PlayerScreen = () => {
     }
   }, [params.id, fetchGameById]);
 
-  const handleNext = useCallback(() => {
-    if (random) {
-      setActiveStep(Math.floor(Math.random() * (data?.cards.length ?? 0)));
-    }
-    setActiveStep((prevActiveStep) => {
-      const next = prevActiveStep + 1;
-      return next >= (data?.cards.length ?? 0) ? 0 : next;
-    });
-  }, [data?.cards.length, random]);
-
   if (isUndefined(data)) {
     return null;
   }
 
   return (
     <Grid item xs={12} md={8} lg={9}>
+      <LocalSettingsContextProvider size={data.cards.length}>
+        <Content data={data} />
+      </LocalSettingsContextProvider>
+    </Grid>
+  );
+};
+
+const Content = ({ data }: { data: GameType }) => {
+  const classes = useStyles();
+
+  const [activeStep, setActiveStep] = useState(0);
+
+  const [dialogVisible, setDialogVisible] = useState<boolean>(false);
+
+  const random = useSelector((state: RootState) => state.player.random);
+
+  const { start, end } = useLocalSettingsContext();
+
+  const handleNext = useCallback(() => {
+    const getNextValue = (prevActiveStep: number) => {
+      const next = prevActiveStep >= start ? prevActiveStep + 1 : start;
+      return next > end ? start : next;
+    };
+
+    if (random) {
+      const maxValue = end - start;
+      const nextStep = start + Math.floor(Math.random() * maxValue);
+      setActiveStep((prev) =>
+        prev !== nextStep ? nextStep : getNextValue(nextStep)
+      );
+    } else {
+      setActiveStep(getNextValue);
+    }
+  }, [random, start, end]);
+
+  return (
+    <>
       <Header
         title={data.title}
         onSettingsPress={() => setDialogVisible(true)}
       />
       <Item
-        className={classes.container}
+        index={activeStep}
         key={activeStep}
+        className={classes.container}
         item={data.cards[activeStep]}
         onNext={handleNext}
       />
@@ -63,6 +87,6 @@ export const PlayerScreen = () => {
         visible={dialogVisible}
         onClose={() => setDialogVisible((prev) => !prev)}
       />
-    </Grid>
+    </>
   );
 };

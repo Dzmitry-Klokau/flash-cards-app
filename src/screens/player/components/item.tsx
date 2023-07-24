@@ -29,6 +29,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     minHeight: "50vh",
   },
   text: { textAlign: "center" },
+  stepNumber: {
+    position: "absolute",
+    top: theme.spacing(2),
+    right: theme.spacing(2),
+  },
 }));
 
 type AnswerState = "visible" | "hidden" | "closed" | undefined;
@@ -95,9 +100,14 @@ const WrappedContent = styled(Box, {
   }),
 }));
 
-type Props = { item: CardType; className?: string; onNext: VoidFunction };
+type Props = {
+  index: number;
+  item: CardType;
+  className?: string;
+  onNext: VoidFunction;
+};
 
-export const Item = ({ item, className, onNext }: Props) => {
+export const Item = ({ index, item, className, onNext }: Props) => {
   const classes = useStyles();
   const [answerState, setAnswerState] = useState<AnswerState>();
 
@@ -134,6 +144,9 @@ export const Item = ({ item, className, onNext }: Props) => {
           }}
           className={classes.cardContent}
         >
+          {answerState !== "visible" && (
+            <Typography className={classes.stepNumber}>{index}</Typography>
+          )}
           <WrappedContent
             visible={answerState === "visible"}
             rotate
