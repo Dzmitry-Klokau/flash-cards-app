@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Grid, Theme } from "@mui/material";
 import { useParams } from "react-router-dom";
-import { isUndefined } from "lodash";
+import { isUndefined, clone } from "lodash";
 import { makeStyles } from "@mui/styles";
 import { useSelector } from "react-redux";
 
@@ -18,6 +18,18 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginTop: theme.spacing(2),
   },
 }));
+
+function shuffleArray(array: Array<any>) {
+  const res = clone(array);
+  for (let i = res.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const temp = res[i];
+    res[i] = res[j];
+    res[j] = temp;
+  }
+
+  return res;
+}
 
 export const PlayerScreen = () => {
   const params = useParams();
@@ -44,6 +56,7 @@ export const PlayerScreen = () => {
 
 const Content = ({ data }: { data: GameType }) => {
   const classes = useStyles();
+  const formattedData = useRef<GameType["cards"]>(data.cards);
 
   const [activeStep, setActiveStep] = useState(0);
 
@@ -53,22 +66,15 @@ const Content = ({ data }: { data: GameType }) => {
 
   const { start, end } = useLocalSettingsContext();
 
-  const handleNext = useCallback(() => {
-    const getNextValue = (prevActiveStep: number) => {
-      const next = prevActiveStep >= start ? prevActiveStep + 1 : start;
-      return next > end ? start : next;
-    };
+  useEffect(() => {
+    const slicedArr = data.cards.slice(start, end);
+    formattedData.current = random ? shuffleArray(slicedArr) : slicedArr;
+  }, [data, random, start, end]);
 
-    if (random) {
-      const maxValue = end - start;
-      const nextStep = start + Math.floor(Math.random() * maxValue);
-      setActiveStep((prev) =>
-        prev !== nextStep ? nextStep : getNextValue(nextStep)
-      );
-    } else {
-      setActiveStep(getNextValue);
-    }
-  }, [random, start, end]);
+  const handleNext = () =>
+    setActiveStep((prev) =>
+      prev + 1 >= formattedData.current.length ? 0 : prev + 1
+    );
 
   return (
     <>
@@ -77,10 +83,9 @@ const Content = ({ data }: { data: GameType }) => {
         onSettingsPress={() => setDialogVisible(true)}
       />
       <Item
-        index={activeStep}
         key={activeStep}
         className={classes.container}
-        item={data.cards[activeStep]}
+        item={formattedData.current[activeStep]}
         onNext={handleNext}
       />
       <SettingsModal

@@ -21,6 +21,7 @@ declare type GroupType = {
 };
 
 declare type CardType = {
+  index: number;
   uuid: string;
   primary: string;
   secondary: string;

@@ -6,7 +6,9 @@ import {
   Typography,
   DialogContent,
   Theme,
-  Slider,
+  Select,
+  SelectChangeEvent,
+  MenuItem,
 } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -39,9 +41,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   dialogContent: {
     minWidth: "40vw",
   },
-  slider: {
-    width: "60%",
-    marginLeft: theme.spacing(2),
+  selector: {
+    marginRight: theme.spacing(1),
   },
 }));
 
@@ -77,20 +78,35 @@ export const SettingsModal = ({ visible, onClose }: Props) => {
           </IconButton>
         </Box>
         <Box className={classes.row}>
-          <Typography>From-To:</Typography>
-          <Slider
-            value={[start, end]}
-            max={size}
-            onChange={(_, newValue: number | number[]) => {
-              const newValues = newValue as number[];
-              if (newValues[0] !== newValues[1]) {
-                updateStart(newValues[0]);
-                updateEnd(newValues[1]);
-              }
+          <Typography className={classes.selector}>From: </Typography>
+          <Select
+            variant="standard"
+            value={`${start}`}
+            className={classes.selector}
+            onChange={(e: SelectChangeEvent) => {
+              updateStart(+e.target.value);
             }}
-            valueLabelDisplay="auto"
-            className={classes.slider}
-          />
+          >
+            {Array.from(Array(end).keys()).map((v) => (
+              <MenuItem key={v} value={v}>
+                {v}
+              </MenuItem>
+            ))}
+          </Select>
+          <Typography className={classes.selector}>To:</Typography>
+          <Select
+            variant="standard"
+            value={`${end}`}
+            onChange={(e: SelectChangeEvent) => {
+              updateEnd(+e.target.value);
+            }}
+          >
+            {Array.from(Array(size - start - 1).keys()).map((v) => (
+              <MenuItem key={v + start + 1} value={v + start + 1}>
+                {v + start + 1}
+              </MenuItem>
+            ))}
+          </Select>
         </Box>
       </DialogContent>
     </Dialog>

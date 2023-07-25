@@ -14,6 +14,7 @@ const styles = () => ({
 });
 
 const emptyCard = (): CardType => ({
+  index: 0,
   primary: "",
   secondary: "",
   optional: "",

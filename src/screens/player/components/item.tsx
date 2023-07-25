@@ -101,13 +101,12 @@ const WrappedContent = styled(Box, {
 }));
 
 type Props = {
-  index: number;
   item: CardType;
   className?: string;
   onNext: VoidFunction;
 };
 
-export const Item = ({ index, item, className, onNext }: Props) => {
+export const Item = ({ item, className, onNext }: Props) => {
   const classes = useStyles();
   const [answerState, setAnswerState] = useState<AnswerState>();
 
@@ -145,7 +144,7 @@ export const Item = ({ index, item, className, onNext }: Props) => {
           className={classes.cardContent}
         >
           {answerState !== "visible" && (
-            <Typography className={classes.stepNumber}>{index}</Typography>
+            <Typography className={classes.stepNumber}>{item.index}</Typography>
           )}
           <WrappedContent
             visible={answerState === "visible"}

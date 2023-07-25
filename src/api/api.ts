@@ -145,9 +145,10 @@ export const api = createApi({
             const game = { ...(docSnap.data() as GameType), id };
             const data = {
               ...game,
-              cards: game.cards.map((c) => ({
+              cards: game.cards.map((c, index) => ({
                 ...c,
                 uuid: uuidv4(),
+                index,
               })),
             };
             return { data };
@@ -167,14 +168,23 @@ export const api = createApi({
             return { data: null };
           }
 
+          const formattedGame = {
+            ...newGame,
+            cards: newGame.cards.map((c: GameType["cards"][0]) => ({
+              primary: c.primary,
+              secondary: c.secondary,
+              optional: c.optional,
+            })),
+          };
+
           if (gameId) {
             // update existing doc
             const docRef = doc(db, "game", gameId);
-            setDoc(docRef, newGame);
+            setDoc(docRef, formattedGame);
           } else {
             // Add a new document with a generated id.
             const collectionRef = collection(db, "game");
-            const res = await addDoc(collectionRef, newGame);
+            const res = await addDoc(collectionRef, formattedGame);
             console.log(res.id);
           }
 
