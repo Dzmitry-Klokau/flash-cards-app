@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { Grid, Theme } from "@mui/material";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Grid, Theme, LinearProgress } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { isUndefined, clone } from "lodash";
 import { makeStyles } from "@mui/styles";
@@ -66,15 +66,24 @@ const Content = ({ data }: { data: GameType }) => {
 
   const { start, end } = useLocalSettingsContext();
 
-  useEffect(() => {
+  const updateFormattedData = useCallback(() => {
     const slicedArr = data.cards.slice(start, end);
+    setActiveStep(0);
     formattedData.current = random ? shuffleArray(slicedArr) : slicedArr;
   }, [data, random, start, end]);
 
+  useEffect(() => {
+    updateFormattedData();
+  }, [updateFormattedData]);
+
   const handleNext = () =>
-    setActiveStep((prev) =>
-      prev + 1 >= formattedData.current.length ? 0 : prev + 1
-    );
+    setActiveStep((prev) => {
+      if (prev + 1 >= formattedData.current.length) {
+        updateFormattedData();
+        return 0;
+      }
+      return prev + 1;
+    });
 
   return (
     <>
@@ -87,6 +96,10 @@ const Content = ({ data }: { data: GameType }) => {
         className={classes.container}
         item={formattedData.current[activeStep]}
         onNext={handleNext}
+      />
+      <LinearProgress
+        variant="buffer"
+        value={(activeStep / formattedData.current.length) * 100}
       />
       <SettingsModal
         visible={dialogVisible}
