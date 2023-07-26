@@ -6,7 +6,6 @@ import {
   Theme,
   Box,
   styled,
-  Divider,
 } from "@mui/material";
 import { useSelector } from "react-redux";
 
