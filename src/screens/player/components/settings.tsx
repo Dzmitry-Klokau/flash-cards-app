@@ -24,6 +24,10 @@ import {
   RootState,
   decrementAnimation,
   incrementAnimation,
+  toggleAlwaysShowPrimary,
+  toggleAutoplay,
+  incrementAutoplaySpeed,
+  decrementAutoplaySpeed,
 } from "../../../redux";
 import { useLocalSettingsContext } from "../context";
 
@@ -51,6 +55,13 @@ export const SettingsModal = ({ visible, onClose }: Props) => {
 
   const random = useSelector((state: RootState) => state.player.random);
   const animation = useSelector((state: RootState) => state.player.animation);
+  const autoplay = useSelector((state: RootState) => state.player.autoplay);
+  const autoplaySpeed = useSelector(
+    (state: RootState) => state.player.autoplaySpeed
+  );
+  const alwaysShowPrimary = useSelector(
+    (state: RootState) => state.player.alwaysShowPrimary
+  );
   const dispatch = useDispatch();
 
   const { start, updateStart, end, updateEnd, size } =
@@ -60,23 +71,6 @@ export const SettingsModal = ({ visible, onClose }: Props) => {
     <Dialog onClose={onClose} open={visible}>
       <DialogTitle>Settings</DialogTitle>
       <DialogContent className={classes.dialogContent}>
-        <Box className={classes.row}>
-          <Typography>Random:</Typography>
-          <IconButton onClick={() => dispatch(toggleRandom())}>
-            {random ? <Checkbox /> : <CheckboxBlank />}
-            {/* <Checkbox checked={random} /> */}
-          </IconButton>
-        </Box>
-        <Box className={classes.row}>
-          <Typography>Animation (ms):</Typography>
-          <IconButton onClick={() => dispatch(decrementAnimation())}>
-            <MinusIcon />
-          </IconButton>
-          <Typography>{animation}</Typography>
-          <IconButton onClick={() => dispatch(incrementAnimation())}>
-            <PlusIcon />
-          </IconButton>
-        </Box>
         <Box className={classes.row}>
           <Typography className={classes.selector}>From: </Typography>
           <Select
@@ -107,6 +101,44 @@ export const SettingsModal = ({ visible, onClose }: Props) => {
               </MenuItem>
             ))}
           </Select>
+        </Box>
+        <Box className={classes.row}>
+          <Typography>Random:</Typography>
+          <IconButton onClick={() => dispatch(toggleRandom())}>
+            {random ? <Checkbox /> : <CheckboxBlank />}
+          </IconButton>
+        </Box>
+        <Box className={classes.row}>
+          <Typography>Always show primary field:</Typography>
+          <IconButton onClick={() => dispatch(toggleAlwaysShowPrimary())}>
+            {alwaysShowPrimary ? <Checkbox /> : <CheckboxBlank />}
+          </IconButton>
+        </Box>
+        <Box className={classes.row}>
+          <Typography>Animation (ms):</Typography>
+          <IconButton onClick={() => dispatch(decrementAnimation())}>
+            <MinusIcon />
+          </IconButton>
+          <Typography>{animation}</Typography>
+          <IconButton onClick={() => dispatch(incrementAnimation())}>
+            <PlusIcon />
+          </IconButton>
+        </Box>
+        <Box className={classes.row}>
+          <Typography>Autoplay:</Typography>
+          <IconButton onClick={() => dispatch(toggleAutoplay())}>
+            {autoplay ? <Checkbox /> : <CheckboxBlank />}
+          </IconButton>
+        </Box>
+        <Box className={classes.row}>
+          <Typography>Autoplay speed (ms):</Typography>
+          <IconButton onClick={() => dispatch(decrementAutoplaySpeed())}>
+            <MinusIcon />
+          </IconButton>
+          <Typography>{autoplaySpeed}</Typography>
+          <IconButton onClick={() => dispatch(incrementAutoplaySpeed())}>
+            <PlusIcon />
+          </IconButton>
         </Box>
       </DialogContent>
     </Dialog>

@@ -2,11 +2,17 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export interface PlayerState {
   random: boolean;
+  alwaysShowPrimary: boolean;
+  autoplay: boolean;
+  autoplaySpeed: number;
   animation: number;
 }
 
 const initialState: PlayerState = {
   random: false,
+  alwaysShowPrimary: false,
+  autoplay: false,
+  autoplaySpeed: 2000,
   animation: 1000,
 };
 
@@ -31,11 +37,32 @@ export const playerSlice = createSlice({
         state.animation -= ANIMATION_STEP;
       }
     },
+    toggleAlwaysShowPrimary: (state) => {
+      state.alwaysShowPrimary = !state.alwaysShowPrimary;
+    },
+    toggleAutoplay: (state) => {
+      state.autoplay = !state.autoplay;
+    },
+    incrementAutoplaySpeed: (state) => {
+      state.autoplaySpeed += ANIMATION_STEP;
+    },
+    decrementAutoplaySpeed: (state) => {
+      if (state.autoplaySpeed - ANIMATION_STEP > 0) {
+        state.autoplaySpeed -= ANIMATION_STEP;
+      }
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { toggleRandom, incrementAnimation, decrementAnimation } =
-  playerSlice.actions;
+export const {
+  toggleRandom,
+  incrementAnimation,
+  decrementAnimation,
+  toggleAlwaysShowPrimary,
+  toggleAutoplay,
+  incrementAutoplaySpeed,
+  decrementAutoplaySpeed,
+} = playerSlice.actions;
 
 export default playerSlice.reducer;

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   Typography,
   CardActionArea,
@@ -108,9 +108,37 @@ type Props = {
 
 export const Item = ({ item, className, onNext }: Props) => {
   const classes = useStyles();
+  const autoplayTimeout = useRef<NodeJS.Timeout | undefined>();
+
   const [answerState, setAnswerState] = useState<AnswerState>();
 
   const animation = useSelector((state: RootState) => state.player.animation);
+  const alwaysShowPrimary = useSelector(
+    (state: RootState) => state.player.alwaysShowPrimary
+  );
+  const autoplay = useSelector((state: RootState) => state.player.autoplay);
+  const autoplaySpeed = useSelector(
+    (state: RootState) => state.player.autoplaySpeed
+  );
+
+  const handleClick = useCallback(() => {
+    if (answerState === "visible") {
+      setAnswerState("closed");
+      return;
+    }
+    setAnswerState("visible");
+  }, [answerState]);
+
+  useEffect(() => {
+    if (autoplayTimeout.current) {
+      clearTimeout(autoplayTimeout.current);
+    }
+    if (autoplay) {
+      autoplayTimeout.current = setTimeout(() => {
+        handleClick();
+      }, autoplaySpeed);
+    }
+  }, [handleClick, autoplay, autoplaySpeed]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -133,16 +161,7 @@ export const Item = ({ item, className, onNext }: Props) => {
         answerState={answerState}
         animationDuration={animation}
       >
-        <CardActionArea
-          onClick={() => {
-            if (answerState === "visible") {
-              setAnswerState("closed");
-              return;
-            }
-            setAnswerState("visible");
-          }}
-          className={classes.cardContent}
-        >
+        <CardActionArea onClick={handleClick} className={classes.cardContent}>
           {answerState !== "visible" && (
             <Typography className={classes.stepNumber}>{item.index}</Typography>
           )}
@@ -157,6 +176,11 @@ export const Item = ({ item, className, onNext }: Props) => {
             <Typography variant="h6" className={classes.text}>
               [ {item.optional} ]
             </Typography>
+            {alwaysShowPrimary && (
+              <Typography variant="h6" className={classes.text}>
+                {item.primary}
+              </Typography>
+            )}
           </WrappedContent>
           <WrappedContent
             visible={answerState === "hidden"}

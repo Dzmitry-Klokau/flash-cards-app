@@ -64,6 +64,7 @@ const Content = ({ data }: { data: GameType }) => {
 
   const random = useSelector((state: RootState) => state.player.random);
 
+
   const { start, end } = useLocalSettingsContext();
 
   const updateFormattedData = useCallback(() => {
