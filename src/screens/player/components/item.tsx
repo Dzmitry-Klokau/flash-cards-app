@@ -6,6 +6,7 @@ import {
   Theme,
   Box,
   styled,
+  Divider,
 } from "@mui/material";
 import { useSelector } from "react-redux";
 
@@ -28,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: theme.spacing(4),
     minHeight: "50vh",
   },
-  text: { textAlign: "center" },
+  text: { textAlign: "center", marginBottom: theme.spacing(2) },
   stepNumber: {
     position: "absolute",
     top: theme.spacing(2),
@@ -170,17 +171,13 @@ export const Item = ({ item, className, onNext }: Props) => {
             rotate
             animationDuration={animation}
           >
+            {alwaysShowPrimary && (
+              <Typography className={classes.text}>{item.primary}</Typography>
+            )}
             <Typography variant="h5" className={classes.text}>
               {item.secondary}
             </Typography>
-            <Typography variant="h6" className={classes.text}>
-              [ {item.optional} ]
-            </Typography>
-            {alwaysShowPrimary && (
-              <Typography variant="h6" className={classes.text}>
-                {item.primary}
-              </Typography>
-            )}
+            <Typography className={classes.text}>{item.optional}</Typography>
           </WrappedContent>
           <WrappedContent
             visible={answerState === "hidden"}
