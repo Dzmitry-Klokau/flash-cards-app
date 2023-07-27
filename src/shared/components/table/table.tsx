@@ -63,6 +63,7 @@ export const Table = ({
                 tableName={tableName}
                 valueNames={valueNames}
                 renderCell={renderCell}
+                createNewItem={createNewItem}
               />
             )}
           ></FieldArray>
@@ -77,11 +78,13 @@ const Body = ({
   arrayHelpers,
   tableName,
   valueNames,
+  createNewItem,
   renderCell,
 }: {
   arrayHelpers: ArrayHelpers;
   tableName: string;
   valueNames: string[];
+  createNewItem: () => any;
   renderCell: RenderCellFunc;
 }) => {
   const { values, errors, setErrors } = useFormikContext();
@@ -95,6 +98,11 @@ const Body = ({
     highlight.current = index;
     setTimeout(() => (highlight.current = undefined), 500);
   };
+
+  const handleInsert = useCallback(
+    (index: number) => arrayHelpers.insert(index + 1, createNewItem()),
+    [arrayHelpers, createNewItem]
+  );
 
   const handleRemove = useCallback(
     (index: number) => arrayHelpers.remove(index),
@@ -133,6 +141,7 @@ const Body = ({
           onUp={handleUp}
           showDown={index !== uuidS.length - 1}
           onDown={handleDown}
+          onInsert={handleInsert}
           tableName={tableName}
           valueNames={valueNames}
           renderCell={renderCell}

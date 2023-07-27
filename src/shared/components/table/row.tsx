@@ -3,11 +3,10 @@ import {
   Delete as DeleteIcon,
   ArrowUpward as ArrowUpwardIcon,
   ArrowDownward as ArrowDownwardIcon,
+  SubdirectoryArrowLeft as InsertRowIcon,
 } from "@mui/icons-material";
 import { connect } from "formik";
 import { Component } from "react";
-
-
 
 type Props = {
   index: number;
@@ -17,6 +16,7 @@ type Props = {
   onUp: (index: number) => void;
   showDown: boolean;
   onDown: (index: number) => void;
+  onInsert: (index: number) => void;
   tableName: string;
   valueNames: string[];
   renderCell: RenderCellFunc;
@@ -80,6 +80,7 @@ class _Row extends Component<Props & FormikProp, State> {
       onUp,
       showDown,
       onDown,
+      onInsert,
       valueNames,
       renderCell,
     } = this.props;
@@ -122,6 +123,7 @@ class _Row extends Component<Props & FormikProp, State> {
         </TableCell>
         {valueNames.map((vName) => (
           <TableCell
+            key={vName}
             padding="none"
             sx={{ width: 100 / valueNames.length - 5 + "%", paddingLeft: 1 }}
           >
@@ -131,6 +133,9 @@ class _Row extends Component<Props & FormikProp, State> {
         <TableCell padding="none">
           <IconButton onClick={() => onRemove(this.props.index)}>
             <DeleteIcon />
+          </IconButton>
+          <IconButton onClick={() => onInsert(this.props.index)}>
+            <InsertRowIcon />
           </IconButton>
         </TableCell>
       </TableRow>
