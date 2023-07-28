@@ -64,7 +64,6 @@ const Content = ({ data }: { data: GameType }) => {
 
   const random = useSelector((state: RootState) => state.player.random);
 
-
   const { start, end } = useLocalSettingsContext();
 
   const updateFormattedData = useCallback(() => {
@@ -90,6 +89,13 @@ const Content = ({ data }: { data: GameType }) => {
     <>
       <Header
         title={data.title}
+        onBackPress={
+          activeStep !== 0
+            ? () => {
+                setActiveStep((prev) => prev - 1);
+              }
+            : undefined
+        }
         onSettingsPress={() => setDialogVisible(true)}
       />
       <Item
