@@ -3,6 +3,7 @@ import { Typography, Box, Theme, IconButton } from "@mui/material";
 import {
   Settings as SettingsIcon,
   ArrowBack as BackBtn,
+  ExitToAppSharp as ExitBtn,
 } from "@mui/icons-material";
 import { makeStyles } from "@mui/styles";
 
@@ -32,10 +33,16 @@ const useStyles = makeStyles((theme: Theme) => ({
 type Props = {
   title: string;
   onBackPress?: VoidFunction;
-  onSettingsPress: VoidFunction;
+  onSettingsPress?: VoidFunction;
+  onExitPress: VoidFunction;
 };
 
-export const Header = ({ title, onBackPress, onSettingsPress }: Props) => {
+export const Header = ({
+  title,
+  onBackPress,
+  onSettingsPress,
+  onExitPress,
+}: Props) => {
   const classes = useStyles();
 
   return (
@@ -49,9 +56,14 @@ export const Header = ({ title, onBackPress, onSettingsPress }: Props) => {
       )}
       <Typography className={classes.title}>{title}</Typography>
       <Box className={classes.settings}>
-        <IconButton onClick={onSettingsPress}>
-          <SettingsIcon />
+        <IconButton onClick={onExitPress}>
+          <ExitBtn />
         </IconButton>
+        {onSettingsPress && (
+          <IconButton onClick={onSettingsPress}>
+            <SettingsIcon />
+          </IconButton>
+        )}
       </Box>
     </Box>
   );

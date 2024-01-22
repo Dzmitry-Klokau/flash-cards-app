@@ -28,8 +28,8 @@ import {
   toggleAutoplay,
   incrementAutoplaySpeed,
   decrementAutoplaySpeed,
-} from "../../../redux";
-import { useLocalSettingsContext } from "../context";
+} from "../../../../redux";
+import { useLocalSettingsContext } from "../../context";
 
 type Props = {
   visible: boolean;

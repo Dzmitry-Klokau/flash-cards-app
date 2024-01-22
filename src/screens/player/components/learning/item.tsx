@@ -11,8 +11,8 @@ import { useSelector } from "react-redux";
 
 import { makeStyles } from "@mui/styles";
 import clsx from "clsx";
-import { shouldForwardProp } from "../../../shared/utils";
-import { RootState } from "../../../redux";
+import { shouldForwardProp } from "../../../../shared/utils";
+import { RootState } from "../../../../redux";
 
 const useStyles = makeStyles((theme: Theme) => ({
   centered: {
